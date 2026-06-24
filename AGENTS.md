@@ -46,3 +46,31 @@ Consult these guides before working on related tasks:
 - **Blog section**: Artículos hardcodeados reemplazados por datos dinámicos desde content collections (pasa `posts` como prop desde las páginas Astro)
 - **og-image.jpg**: Creada imagen OG 1200×630px en `public/og-image.jpg`
 - **favicon_light.ico**: Movido de `public/legacy/misc/` a `public/favicon_light.ico`
+
+### Fase 4: Limpieza y Deuda Técnica
+- **Deps**: Eliminar `@radix-ui/react-dropdown-menu` (no usado). Mover `@types/react`, `@types/react-dom` a devDependencies
+- **Card**: Eliminar `src/components/ui/card.tsx` si no se usa
+- **i18n**: Eliminar claves muertas `projects.view`, `projects.viewAll` de `es.json`, `en.json`
+- **package.json**: Renombrar `name`
+- **README.md**: Reemplazar template Astro por defecto con contenido del portfolio
+
+### Fase 5: UX y UI
+- **Twitter → X**: Actualizar icono, label y enlaces en `icons.tsx`, `Footer.tsx`, `Contact.tsx`, `Hero.tsx`
+- **404**: Página personalizada `src/pages/404.astro`
+- **Hero CTA**: ScrollIntoView sin conflicto con Lenis en `Hero.tsx`, `Header.tsx`
+- **Login i18n**: Login hardcodeado en español, migrar a i18n
+
+### Fase 6: Rendimiento
+- **Hydration**: `client:load` → `client:visible`/`client:idle` en componentes below the fold
+- **Imágenes**: `loading="lazy"` + `width`/`height` en `About.tsx`, `Projects.tsx`
+- **Partículas**: Reducir en móvil, respetar `prefers-reduced-motion`
+- **Preconnect**: Hints para recursos externos en `BaseLayout.astro`
+- **Lenis**: Resolver conflicto scroll-behavior smooth + scrollIntoView
+
+### Fase 7: SEO y Accesibilidad
+- **theme-color**: Meta tag en `BaseLayout.astro`
+- **hreflang**: x-default apunta a `/es/` en vez de `/`
+- **aria-label**: Canvas partículas en `Hero.tsx`
+- **aria-describedby**: Errores formulario en `Contact.tsx`
+- **viewport-fit=cover**: iOS notched en `BaseLayout.astro`
+- **Site URL**: Variable de entorno `PUBLIC_SITE_URL`
