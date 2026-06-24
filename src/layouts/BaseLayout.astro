@@ -1,0 +1,102 @@
+---
+import type { Locale } from '../lib/i18n';
+import { t } from '../lib/i18n';
+import SmoothScroll from '../components/SmoothScroll';
+import '../styles/globals.css';
+
+export interface Props {
+  locale: Locale;
+  title?: string;
+  description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+}
+
+const { locale } = Astro.props;
+const title = Astro.props.title ?? t(locale, 'seo.title');
+const description = Astro.props.description ?? t(locale, 'seo.description');
+const ogTitle = Astro.props.ogTitle ?? t(locale, 'seo.ogTitle');
+const ogDescription = Astro.props.ogDescription ?? t(locale, 'seo.ogDescription');
+const ogImage = Astro.props.ogImage ?? 'https://jmmc.vercel.app/og-image.jpg';
+const siteUrl = 'https://jmmc.vercel.app';
+const canonical = `${siteUrl}/${locale}/`;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Juanma MC" />
+    <meta name="creator" content="Juanma MC" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
+
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es" href={`${siteUrl}/es/`} />
+    <link rel="alternate" hreflang="en" href={`${siteUrl}/en/`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}/es/`} />
+
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Juanma MC Portfolio" />
+    <meta property="og:locale" content={locale === 'es' ? 'es_ES' : 'en_US'} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon_light.ico" />
+
+    <script is:inline>
+      (function() {
+        var theme = localStorage.getItem('theme');
+        var resolved = 'system';
+        if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          resolved = 'dark';
+        } else {
+          resolved = 'light';
+        }
+        document.documentElement.classList.add(resolved);
+        document.documentElement.style.colorScheme = resolved;
+      })();
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Juanma MC",
+      "url": siteUrl,
+      "image": ogImage,
+      "jobTitle": "Fullstack Developer",
+      "knowsAbout": ["Web Development", "AI", "Automation", "React", "Node.js", "TypeScript"],
+      "sameAs": [
+        "https://github.com/juanmamc",
+        "https://linkedin.com/in/juanmamc"
+      ]
+    })} />
+  </head>
+  <body class="noise-bg min-h-screen antialiased selection:bg-primary selection:text-primary-foreground">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg"
+    >
+      {locale === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
+    </a>
+
+    <div id="main-content">
+      <slot />
+    </div>
+    <SmoothScroll client:only="react" />
+  </body>
+</html>

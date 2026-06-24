@@ -1,0 +1,108 @@
+---
+import '../styles/globals.css';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login | Juanma MC</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <script is:inline>
+      (function() {
+        var theme = localStorage.getItem('theme');
+        var resolved = 'system';
+        if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          resolved = 'dark';
+        } else {
+          resolved = 'light';
+        }
+        document.documentElement.classList.add(resolved);
+        document.documentElement.style.colorScheme = resolved;
+      })();
+    </script>
+  </head>
+  <body class="noise-bg min-h-screen antialiased selection:bg-primary selection:text-primary-foreground flex items-center justify-center">
+    <div class="w-full max-w-sm mx-auto px-4">
+      <div class="rounded-2xl border border-border bg-card p-8">
+        <div class="text-center mb-8">
+          <a href="/" class="text-2xl font-bold tracking-tight hover:text-primary transition-colors">JMMC</a>
+          <p class="text-sm text-muted-foreground mt-2">Acceso al Blog</p>
+        </div>
+
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="username" class="block text-sm font-medium mb-1 text-foreground">Usuario</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              required
+              class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              placeholder="Usuario"
+            />
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium mb-1 text-foreground">Contraseña</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              placeholder="Contraseña"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer"
+          >
+            Entrar
+          </button>
+
+          <p id="error-msg" class="text-sm text-destructive text-center hidden"></p>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.currentTarget as HTMLFormElement;
+        const formData = new FormData(form);
+        const errorMsg = document.getElementById('error-msg')!;
+        const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+        errorMsg.classList.add('hidden');
+        btn.disabled = true;
+        btn.textContent = 'Entrando...';
+
+        try {
+          const res = await fetch('/api/login', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (res.ok) {
+            const params = new URLSearchParams(window.location.search);
+            const redirect = params.get('redirect') || '/blog';
+            window.location.href = redirect;
+          } else {
+            const data = await res.json();
+            errorMsg.textContent = data.error || 'Error al iniciar sesión';
+            errorMsg.classList.remove('hidden');
+          }
+        } catch {
+          errorMsg.textContent = 'Error de conexión';
+          errorMsg.classList.remove('hidden');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Entrar';
+        }
+      });
+    </script>
+  </body>
+</html>
