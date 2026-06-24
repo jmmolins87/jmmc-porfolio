@@ -1,1 +1,0 @@
-var e=null;function t(t){e=t}function n(t,n){if(e)e.scrollTo(t,n);else{let e=document.getElementById(t);e&&e.scrollIntoView({behavior:`smooth`})}}export{t as n,n as t};
