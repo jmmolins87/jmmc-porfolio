@@ -7,6 +7,7 @@ import LanguageSwitcher from '../LanguageSwitcher';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '../ui/sheet';
 import { cn } from '../../lib/utils';
+import { scrollTo } from '../../lib/scroll';
 
 interface Props {
   locale: Locale;
@@ -17,9 +18,8 @@ const navKeys = ['home', 'about', 'skills', 'experience', 'projects', 'services'
 export default function Header({ locale }: Props) {
   const [open, setOpen] = useState(false);
 
-  function scrollTo(section: string) {
-    const el = document.getElementById(section);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  function handleNav(section: string) {
+    scrollTo(section);
     setOpen(false);
   }
 
@@ -37,7 +37,7 @@ export default function Header({ locale }: Props) {
         )}
       >
         <button
-          onClick={() => scrollTo('hero')}
+          onClick={() => handleNav('hero')}
           className="text-lg font-bold tracking-tight hover:text-primary transition-colors cursor-pointer"
         >
           JMMC
@@ -47,7 +47,7 @@ export default function Header({ locale }: Props) {
           {navKeys.map((key) => (
             <button
               key={key}
-              onClick={() => scrollTo(key)}
+              onClick={() => handleNav(key)}
               className={cn(
                 'px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
                 'hover:bg-muted cursor-pointer'
@@ -77,7 +77,7 @@ export default function Header({ locale }: Props) {
                   {navKeys.map((key) => (
                     <button
                       key={key}
-                      onClick={() => scrollTo(key)}
+                      onClick={() => handleNav(key)}
                       className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium hover:bg-muted transition-colors cursor-pointer"
                     >
                       {t(locale, `nav.${key}`)}

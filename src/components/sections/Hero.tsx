@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowDown } from 'lucide-react';
-import { GitHubIcon, LinkedInIcon, TwitterIcon } from '../ui/icons';
+import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/icons';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
 import { Button } from '../ui/button';
 import { cn } from '../../lib/utils';
+import { scrollTo } from '../../lib/scroll';
 
 interface Props {
   locale: Locale;
@@ -157,14 +158,14 @@ export default function Hero({ locale }: Props) {
         >
           <Button
             size="lg"
-            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => scrollTo('projects')}
           >
             {t(locale, 'hero.cta.projects')}
           </Button>
           <Button
             variant="outline"
             size="lg"
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => scrollTo('contact')}
           >
             {t(locale, 'hero.cta.contact')}
           </Button>
@@ -179,7 +180,7 @@ export default function Hero({ locale }: Props) {
           {[
             { icon: GitHubIcon, href: 'https://github.com/juanmamc', label: 'GitHub' },
             { icon: LinkedInIcon, href: 'https://linkedin.com/in/juanmamc', label: 'LinkedIn' },
-            { icon: TwitterIcon, href: 'https://twitter.com/juanmamc', label: 'Twitter' },
+            { icon: XIcon, href: 'https://x.com/juanmamc', label: 'X' },
           ].map(({ icon: Icon, href, label }) => (
             <a
               key={label}
@@ -206,7 +207,7 @@ export default function Hero({ locale }: Props) {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
       >
         <button
-          onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+          onClick={() => scrollTo('about')}
           className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer"
           aria-label={t(locale, 'hero.scroll')}
         >

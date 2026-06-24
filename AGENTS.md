@@ -55,10 +55,10 @@ Consult these guides before working on related tasks:
 - **README.md**: Reemplazar template Astro por defecto con contenido del portfolio
 
 ### Fase 5: UX y UI
-- **Twitter → X**: Actualizar icono, label y enlaces en `icons.tsx`, `Footer.tsx`, `Contact.tsx`, `Hero.tsx`
-- **404**: Página personalizada `src/pages/404.astro`
-- **Hero CTA**: ScrollIntoView sin conflicto con Lenis en `Hero.tsx`, `Header.tsx`
-- **Login i18n**: Login hardcodeado en español, migrar a i18n
+- **Twitter → X**: Renombrado icono `TwitterIcon` → `XIcon`, actualizados labels y enlaces (`x.com/juanmamc`) en `icons.tsx`, `Footer.tsx`, `Contact.tsx`, `Hero.tsx`
+- **404**: Página personalizada `src/pages/404.astro` con detección de idioma
+- **Hero CTA**: Creado `src/lib/scroll.ts` con `scrollTo()` que usa Lenis si disponible, fallback a `scrollIntoView`. Actualizados `Hero.tsx` y `Header.tsx`
+- **Login i18n**: Login migrado a i18n con `detectLocale()` desde Accept-Language. Añadidas 11 claves de traducción ES/EN
 
 ### Fase 6: Rendimiento
 - **Hydration**: `client:load` → `client:visible`/`client:idle` en componentes below the fold

@@ -9,6 +9,11 @@ export function t(locale: Locale, key: string): string {
   return translations[locale]?.[key] ?? key;
 }
 
+export function detectLocale(acceptLanguage: string): Locale {
+  if (acceptLanguage.startsWith('en')) return 'en';
+  return 'es';
+}
+
 export function getLocaleFromPath(pathname: string): Locale {
   if (pathname.startsWith('/en')) return 'en';
   return 'es';

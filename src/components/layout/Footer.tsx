@@ -36,7 +36,7 @@ export default function Footer({ locale }: Props) {
           {[
             { label: 'GitHub', href: 'https://github.com/juanmamc' },
             { label: 'LinkedIn', href: 'https://linkedin.com/in/juanmamc' },
-            { label: 'Twitter', href: 'https://twitter.com/juanmamc' },
+            { label: 'X', href: 'https://x.com/juanmamc' },
           ].map((link) => (
             <a
               key={link.label}

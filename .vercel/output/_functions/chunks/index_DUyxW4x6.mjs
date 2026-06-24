@@ -1,7 +1,9 @@
 import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
 import { A as maybeRenderHead, D as renderTemplate, I as createComponent, M as addAttribute, T as renderComponent } from "./fetch-state_DCNjDBxH.mjs";
 import "./compiler_BmoE8rpE.mjs";
-import { n as t, r as getCollection, t as $$BaseLayout } from "./BaseLayout_Dyi3-vWs.mjs";
+import { n as t } from "./globals_DtL64wfI.mjs";
+import { t as $$BaseLayout } from "./BaseLayout_Bamyr-nT.mjs";
+import { t as getCollection } from "./_astro_content_DIFgVWnt.mjs";
 //#region src/pages/blog/index.astro
 var blog_exports = /* @__PURE__ */ __exportAll({
 	default: () => $$Index,

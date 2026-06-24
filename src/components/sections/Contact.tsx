@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Send } from 'lucide-react';
-import { GitHubIcon, LinkedInIcon, TwitterIcon, MailIcon } from '../ui/icons';
+import { GitHubIcon, LinkedInIcon, XIcon, MailIcon } from '../ui/icons';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -171,7 +171,7 @@ export default function Contact({ locale }: Props) {
               { icon: MailIcon, href: 'mailto:hello@jmmc.dev', label: 'Email' },
               { icon: GitHubIcon, href: 'https://github.com/juanmamc', label: 'GitHub' },
               { icon: LinkedInIcon, href: 'https://linkedin.com/in/juanmamc', label: 'LinkedIn' },
-              { icon: TwitterIcon, href: 'https://twitter.com/juanmamc', label: 'Twitter' },
+              { icon: XIcon, href: 'https://x.com/juanmamc', label: 'X' },
             ].map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
