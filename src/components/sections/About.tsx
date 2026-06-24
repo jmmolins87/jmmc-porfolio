@@ -91,6 +91,9 @@ export default function About({ locale }: Props) {
               <img
                 src="/imgs/me.png"
                 alt="Juanma MC"
+                loading="lazy"
+                width="400"
+                height="400"
                 className="h-full w-full object-cover"
               />
             </div>

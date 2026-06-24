@@ -1,7 +1,7 @@
 import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
 import { D as renderTemplate, F as createAstro, I as createComponent, M as addAttribute, j as renderHead, w as renderScript } from "./fetch-state_DCNjDBxH.mjs";
 import "./compiler_BmoE8rpE.mjs";
-import { n as t, t as detectLocale } from "./globals_DtL64wfI.mjs";
+import { n as t, t as detectLocale } from "./globals_DXUUupdJ.mjs";
 //#region src/pages/login.astro
 var login_exports = /* @__PURE__ */ __exportAll({
 	default: () => $$Login,

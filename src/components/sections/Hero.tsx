@@ -21,6 +21,10 @@ function ParticlesBg() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 768;
+    const particleCount = prefersReducedMotion ? 0 : isMobile ? 20 : 50;
+
     let animId: number;
     const particles: { x: number; y: number; vx: number; vy: number; size: number; alpha: number }[] = [];
 
@@ -32,7 +36,7 @@ function ParticlesBg() {
     resize();
     window.addEventListener('resize', resize);
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -63,7 +67,10 @@ function ParticlesBg() {
 
       animId = requestAnimationFrame(animate);
     }
-    animate();
+
+    if (!prefersReducedMotion) {
+      animate();
+    }
 
     return () => {
       cancelAnimationFrame(animId);
@@ -71,7 +78,7 @@ function ParticlesBg() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" aria-label="Fondo animado de partículas" />;
 }
 
 function GradientOrbs() {

@@ -61,11 +61,11 @@ Consult these guides before working on related tasks:
 - **Login i18n**: Login migrado a i18n con `detectLocale()` desde Accept-Language. Añadidas 11 claves de traducción ES/EN
 
 ### Fase 6: Rendimiento
-- **Hydration**: `client:load` → `client:visible`/`client:idle` en componentes below the fold
+- **Hydration**: `client:load` → `client:visible` en componentes below the fold. Header y Hero mantienen `client:load`
 - **Imágenes**: `loading="lazy"` + `width`/`height` en `About.tsx`, `Projects.tsx`
-- **Partículas**: Reducir en móvil, respetar `prefers-reduced-motion`
+- **Partículas**: Reducidas en móvil (20 vs 50), respeta `prefers-reduced-motion` (desactiva si activo)
 - **Preconnect**: Hints para recursos externos en `BaseLayout.astro`
-- **Lenis**: Resolver conflicto scroll-behavior smooth + scrollIntoView
+- **Lenis**: `scroll-behavior: smooth` → `auto` en globals.css para evitar conflicto con Lenis
 
 ### Fase 7: SEO y Accesibilidad
 - **theme-color**: Meta tag en `BaseLayout.astro`

@@ -41,13 +41,13 @@ const blogPosts = allPosts
   <Header locale={locale} client:load />
   <main>
     <Hero locale={locale} client:load />
-    <About locale={locale} client:load />
-    <Skills locale={locale} client:load />
-    <Timeline locale={locale} client:load />
-    <Projects locale={locale} client:load />
-    <Services locale={locale} client:load />
-    <Blog locale={locale} posts={blogPosts} client:load />
-    <Contact locale={locale} client:load />
+    <About locale={locale} client:visible />
+    <Skills locale={locale} client:visible />
+    <Timeline locale={locale} client:visible />
+    <Projects locale={locale} client:visible />
+    <Services locale={locale} client:visible />
+    <Blog locale={locale} posts={blogPosts} client:visible />
+    <Contact locale={locale} client:visible />
   </main>
-  <Footer locale={locale} client:load />
+  <Footer locale={locale} client:visible />
 </BaseLayout>
