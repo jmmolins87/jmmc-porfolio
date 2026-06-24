@@ -1,4 +1,4 @@
-import { n as getImage$1 } from "./assets_CIiej0pP.mjs";
+import { n as getImage$1 } from "./assets_ERMFHjy9.mjs";
 //#region \0virtual:astro:get-image
 var imageConfig = {
 	"endpoint": { "route": "/_image" },

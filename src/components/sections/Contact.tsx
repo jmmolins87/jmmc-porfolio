@@ -90,35 +90,41 @@ export default function Contact({ locale }: Props) {
           >
             <div>
               <Input
+                id="contact-name"
                 placeholder={t(locale, 'contact.name')}
                 {...register('name')}
                 aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? 'name-error' : undefined}
               />
               {errors.name && (
-                <p className="text-sm text-destructive mt-1">{errors.name.message}</p>
+                <p id="name-error" className="text-sm text-destructive mt-1">{errors.name.message}</p>
               )}
             </div>
 
             <div>
               <Input
+                id="contact-email"
                 type="email"
                 placeholder={t(locale, 'contact.email')}
                 {...register('email')}
                 aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? 'email-error' : undefined}
               />
               {errors.email && (
-                <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
+                <p id="email-error" className="text-sm text-destructive mt-1">{errors.email.message}</p>
               )}
             </div>
 
             <div>
               <Textarea
+                id="contact-message"
                 placeholder={t(locale, 'contact.message')}
                 {...register('message')}
                 aria-invalid={!!errors.message}
+                aria-describedby={errors.message ? 'message-error' : undefined}
               />
               {errors.message && (
-                <p className="text-sm text-destructive mt-1">{errors.message.message}</p>
+                <p id="message-error" className="text-sm text-destructive mt-1">{errors.message.message}</p>
               )}
             </div>
 

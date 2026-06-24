@@ -1,6 +1,6 @@
 import { $ as UnsupportedImageConversion, A as MissingImageDimension, C as InvalidImageService, H as RemoteImageNotAllowed, c as ExpectedImageOptions, et as UnsupportedImageFormat, l as ExpectedNotESMImage, nt as AstroError, s as ExpectedImage, w as LocalImageUsedWrongly, y as IncompatibleDescriptorOptions } from "./errors-data_cGRVEoLX.mjs";
-import { at as isRemotePath, ot as joinPaths, pt as isRemoteAllowed, ut as removeQueryString } from "./fetch-state_DCNjDBxH.mjs";
-import { a as isRemoteImage, i as isESMImportedImage, o as resolveSrc, t as inferRemoteSize } from "./remoteProbe_CZK_ndrR.mjs";
+import { at as isRemotePath, ot as joinPaths, pt as isRemoteAllowed, ut as removeQueryString } from "./fetch-state_pc5rxr9W.mjs";
+import { a as isRemoteImage, i as isESMImportedImage, o as resolveSrc, t as inferRemoteSize } from "./remoteProbe_CF5NiZwc.mjs";
 import { i as VALID_SUPPORTED_FORMATS, n as DEFAULT_OUTPUT_FORMAT, t as DEFAULT_HASH_PROPS } from "./consts_ScGwT_Hf.mjs";
 //#region node_modules/.pnpm/astro@7.0.2_@emnapi+core@1.11.1_@emnapi+runtime@1.11.1_@types+node@24.13.2_@vercel+functions@3.7.3_jiti@2.7.0_yaml@2.9.0/node_modules/astro/dist/assets/layout.js
 var DEFAULT_RESOLUTIONS = [
@@ -272,7 +272,7 @@ var cssFitValues = [
 ];
 async function getConfiguredImageService() {
 	if (!globalThis?.astroAsset?.imageService) {
-		const { default: service } = await import("./sharp_5EoTeuYg.mjs").catch((e) => {
+		const { default: service } = await import("./sharp_Chw24rLR.mjs").catch((e) => {
 			const error = new AstroError(InvalidImageService);
 			error.cause = e;
 			throw error;

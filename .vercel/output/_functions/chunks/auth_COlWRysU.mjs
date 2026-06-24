@@ -10,6 +10,7 @@ function getEnv(key, fallback) {
 		"DEV": false,
 		"MODE": "production",
 		"PROD": true,
+		"PUBLIC_SITE_URL": "https://jmmc.vercel.app",
 		"SITE": "https://jmmc.vercel.app",
 		"SSR": true
 	}, {

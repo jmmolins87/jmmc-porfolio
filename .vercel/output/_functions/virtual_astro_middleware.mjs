@@ -1,5 +1,5 @@
-import { H as defineMiddleware, z as sequence } from "./chunks/fetch-state_DCNjDBxH.mjs";
-import { r as verifyToken } from "./chunks/auth_DnsCpOq1.mjs";
+import { H as defineMiddleware, z as sequence } from "./chunks/fetch-state_pc5rxr9W.mjs";
+import { r as verifyToken } from "./chunks/auth_COlWRysU.mjs";
 //#region src/middleware.ts
 var protectedPaths = [
 	"/blog",

@@ -1,6 +1,6 @@
 import { M as MissingSharp, P as NoImageMetadata, et as UnsupportedImageFormat, nt as AstroError } from "./errors-data_cGRVEoLX.mjs";
-import { r as detector } from "./remoteProbe_CZK_ndrR.mjs";
-import { a as resolveDefaultOutputFormat, i as parseQuality, r as baseService } from "./assets_CIiej0pP.mjs";
+import { r as detector } from "./remoteProbe_CF5NiZwc.mjs";
+import { a as resolveDefaultOutputFormat, i as parseQuality, r as baseService } from "./assets_ERMFHjy9.mjs";
 //#region node_modules/.pnpm/astro@7.0.2_@emnapi+core@1.11.1_@emnapi+runtime@1.11.1_@types+node@24.13.2_@vercel+functions@3.7.3_jiti@2.7.0_yaml@2.9.0/node_modules/astro/dist/assets/services/sharp.js
 var sharp;
 var qualityTable = {

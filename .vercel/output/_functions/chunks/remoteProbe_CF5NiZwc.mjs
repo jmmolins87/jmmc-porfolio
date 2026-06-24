@@ -1,5 +1,5 @@
 import { H as RemoteImageNotAllowed, P as NoImageMetadata, nt as AstroError, u as FailedToFetchRemoteImageDimensions } from "./errors-data_cGRVEoLX.mjs";
-import { pt as isRemoteAllowed } from "./fetch-state_DCNjDBxH.mjs";
+import { pt as isRemoteAllowed } from "./fetch-state_pc5rxr9W.mjs";
 //#region node_modules/.pnpm/astro@7.0.2_@emnapi+core@1.11.1_@emnapi+runtime@1.11.1_@types+node@24.13.2_@vercel+functions@3.7.3_jiti@2.7.0_yaml@2.9.0/node_modules/astro/dist/assets/utils/imageKind.js
 function isESMImportedImage(src) {
 	return typeof src === "object" || typeof src === "function" && "src" in src;

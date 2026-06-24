@@ -274,6 +274,7 @@ function deserializeActionResult(res) {
 			"DEV": false,
 			"MODE": "production",
 			"PROD": true,
+			"PUBLIC_SITE_URL": "https://jmmc.vercel.app",
 			"SITE": "https://jmmc.vercel.app",
 			"SSR": true
 		}, {})?.PROD) return {
@@ -507,6 +508,7 @@ function serializeActionResult(res) {
 			"DEV": false,
 			"MODE": "production",
 			"PROD": true,
+			"PUBLIC_SITE_URL": "https://jmmc.vercel.app",
 			"SITE": "https://jmmc.vercel.app",
 			"SSR": true
 		}, {})?.DEV) actionResultErrorStack.set(res.error.stack);

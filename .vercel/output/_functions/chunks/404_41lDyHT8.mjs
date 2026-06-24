@@ -1,8 +1,8 @@
 import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
-import { A as maybeRenderHead, D as renderTemplate, F as createAstro, I as createComponent, T as renderComponent } from "./fetch-state_DCNjDBxH.mjs";
-import "./compiler_BmoE8rpE.mjs";
+import { A as maybeRenderHead, D as renderTemplate, F as createAstro, I as createComponent, T as renderComponent } from "./fetch-state_pc5rxr9W.mjs";
+import "./compiler_CAoH7IJf.mjs";
 import { t as detectLocale } from "./globals_DXUUupdJ.mjs";
-import { t as $$BaseLayout } from "./BaseLayout_Ca5a_Mqc.mjs";
+import { t as $$BaseLayout } from "./BaseLayout_aSNdEJQy.mjs";
 //#region src/pages/404.astro
 var _404_exports = /* @__PURE__ */ __exportAll({
 	default: () => $$404,

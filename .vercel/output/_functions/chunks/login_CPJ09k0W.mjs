@@ -1,5 +1,5 @@
 import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
-import { n as validateCredentials, t as createToken } from "./auth_DnsCpOq1.mjs";
+import { n as validateCredentials, t as createToken } from "./auth_COlWRysU.mjs";
 //#region src/pages/api/login.ts
 var login_exports = /* @__PURE__ */ __exportAll({ POST: () => POST });
 var POST = async ({ request, cookies }) => {

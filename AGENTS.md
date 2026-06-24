@@ -68,9 +68,9 @@ Consult these guides before working on related tasks:
 - **Lenis**: `scroll-behavior: smooth` → `auto` en globals.css para evitar conflicto con Lenis
 
 ### Fase 7: SEO y Accesibilidad
-- **theme-color**: Meta tag en `BaseLayout.astro`
-- **hreflang**: x-default apunta a `/es/` en vez de `/`
+- **theme-color**: Meta tag en `BaseLayout.astro` con media queries para dark/light
+- **hreflang**: x-default apunta a `/` en vez de `/es/`
 - **aria-label**: Canvas partículas en `Hero.tsx`
-- **aria-describedby**: Errores formulario en `Contact.tsx`
+- **aria-describedby**: Errores formulario con IDs únicos en `Contact.tsx`
 - **viewport-fit=cover**: iOS notched en `BaseLayout.astro`
-- **Site URL**: Variable de entorno `PUBLIC_SITE_URL`
+- **Site URL**: Variable de entorno `PUBLIC_SITE_URL` con fallback a hardcoded
