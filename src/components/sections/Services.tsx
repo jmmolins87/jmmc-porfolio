@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import { Code, Bot, Lightbulb, type LucideIcon } from 'lucide-react';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
@@ -92,20 +92,14 @@ function ServiceCard({ service, locale }: { service: ServiceItem; locale: Locale
 }
 
 export default function Services({ locale }: Props) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end end'],
-  });
-
   return (
-    <section id="services" ref={sectionRef} className="relative py-24 md:py-32">
+    <section id="services" className="relative py-24 md:py-32">
       <div className="section-container">
         <motion.h2
-          style={{
-            opacity: useTransform(scrollYProgress, [0, 0.15], [0, 1]),
-            y: useTransform(scrollYProgress, [0, 0.15], [40, 0]),
-          }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
           className="section-title"
         >
           {t(locale, 'services.title')}

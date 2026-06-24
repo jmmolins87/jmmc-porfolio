@@ -13,7 +13,16 @@ interface Props {
   locale: Locale;
 }
 
-const navKeys = ['home', 'about', 'skills', 'experience', 'projects', 'services', 'blog', 'contact'] as const;
+const navKeys: { key: string; section: string }[] = [
+  { key: 'home', section: 'hero' },
+  { key: 'about', section: 'about' },
+  { key: 'skills', section: 'skills' },
+  { key: 'experience', section: 'experience' },
+  { key: 'projects', section: 'projects' },
+  { key: 'services', section: 'services' },
+  { key: 'blog', section: 'blog' },
+  { key: 'contact', section: 'contact' },
+];
 
 export default function Header({ locale }: Props) {
   const [open, setOpen] = useState(false);
@@ -38,16 +47,27 @@ export default function Header({ locale }: Props) {
       >
         <button
           onClick={() => handleNav('hero')}
-          className="text-lg font-bold tracking-tight hover:text-primary transition-colors cursor-pointer"
+          className="flex items-center cursor-pointer"
         >
-          JMMC
+          <img
+            src="/legacy/logo/jmmc_logo_negro.png"
+            alt="JMMC"
+            height="28"
+            className="dark:hidden"
+          />
+          <img
+            src="/legacy/logo/jmmc_logo_blanco.png"
+            alt="JMMC"
+            height="28"
+            className="hidden dark:block"
+          />
         </button>
 
         <div className="hidden md:flex items-center gap-1">
-          {navKeys.map((key) => (
+          {navKeys.map(({ key, section }) => (
             <button
               key={key}
-              onClick={() => handleNav(key)}
+              onClick={() => handleNav(section)}
               className={cn(
                 'px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
                 'hover:bg-muted cursor-pointer'
@@ -74,10 +94,10 @@ export default function Header({ locale }: Props) {
                   <SheetTitle>JMMC</SheetTitle>
                 </SheetHeader>
                 <div className="mt-8 flex flex-col gap-2">
-                  {navKeys.map((key) => (
+                  {navKeys.map(({ key, section }) => (
                     <button
                       key={key}
-                      onClick={() => handleNav(key)}
+                      onClick={() => handleNav(section)}
                       className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium hover:bg-muted transition-colors cursor-pointer"
                     >
                       {t(locale, `nav.${key}`)}

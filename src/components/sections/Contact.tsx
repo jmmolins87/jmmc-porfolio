@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { useState } from 'react';
+import { motion } from 'motion/react';
 import { Send } from 'lucide-react';
 import { GitHubIcon, LinkedInIcon, XIcon, MailIcon } from '../ui/icons';
 import { useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { cn } from '../../lib/utils';
+import { fadeUp } from '../../lib/animations';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -25,11 +26,6 @@ interface Props {
 }
 
 export default function Contact({ locale }: Props) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end end'],
-  });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   const {
@@ -64,13 +60,13 @@ export default function Contact({ locale }: Props) {
   }
 
   return (
-    <section id="contact" ref={sectionRef} className="relative py-24 md:py-32">
+    <section id="contact" className="relative py-24 md:py-32">
       <div className="section-container">
         <motion.div
-          style={{
-            opacity: useTransform(scrollYProgress, [0, 0.2], [0, 1]),
-            y: useTransform(scrollYProgress, [0, 0.2], [40, 0]),
-          }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
           className="text-center mb-12"
         >
           <h2 className="section-title">{t(locale, 'contact.title')}</h2>
@@ -83,10 +79,10 @@ export default function Contact({ locale }: Props) {
           <motion.form
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-5"
-            style={{
-              opacity: useTransform(scrollYProgress, [0.1, 0.4], [0, 1]),
-              y: useTransform(scrollYProgress, [0.1, 0.4], [30, 0]),
-            }}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
           >
             <div>
               <Input

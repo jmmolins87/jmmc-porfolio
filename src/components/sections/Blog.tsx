@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
@@ -22,22 +21,16 @@ interface Post {
 }
 
 export default function Blog({ locale, posts = [] }: Props) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end end'],
-  });
-
   if (posts.length === 0) return null;
 
   return (
-    <section id="blog" ref={sectionRef} className="relative py-24 md:py-32">
+    <section id="blog" className="relative py-24 md:py-32">
       <div className="section-container">
         <motion.h2
-          style={{
-            opacity: useTransform(scrollYProgress, [0, 0.15], [0, 1]),
-            y: useTransform(scrollYProgress, [0, 0.15], [40, 0]),
-          }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
           className="section-title"
         >
           {t(locale, 'blog.title')}

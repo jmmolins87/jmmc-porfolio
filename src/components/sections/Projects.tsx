@@ -1,10 +1,9 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import { ExternalLink } from 'lucide-react';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
 import { Badge } from '../ui/badge';
-import { scaleIn, staggerContainer } from '../../lib/animations';
+import { fadeUp, scaleIn, staggerContainer } from '../../lib/animations';
 import { cn } from '../../lib/utils';
 
 interface Props {
@@ -181,20 +180,14 @@ function ProjectCard({ project }: { project: Project }) {
 }
 
 export default function Projects({ locale }: Props) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end end'],
-  });
-
   return (
-    <section id="projects" ref={sectionRef} className="relative py-24 md:py-32">
+    <section id="projects" className="relative py-24 md:py-32">
       <div className="section-container">
         <motion.h2
-          style={{
-            opacity: useTransform(scrollYProgress, [0, 0.15], [0, 1]),
-            y: useTransform(scrollYProgress, [0, 0.15], [40, 0]),
-          }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
           className="section-title"
         >
           {t(locale, 'projects.title')}

@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
-import { fadeLeft, fadeRight, staggerContainer } from '../../lib/animations';
+import { fadeLeft, fadeRight, fadeUp, staggerContainer } from '../../lib/animations';
 import { cn } from '../../lib/utils';
 
 interface Props {
@@ -98,16 +98,16 @@ export default function Timeline({ locale }: Props) {
     offset: ['start end', 'end end'],
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 0.8], ['0%', '100%']);
+  const lineHeight = useTransform(scrollYProgress, [0, 0.6], ['0%', '100%']);
 
   return (
     <section id="experience" ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden">
       <div className="section-container">
         <motion.h2
-          style={{
-            opacity: useTransform(scrollYProgress, [0, 0.15], [0, 1]),
-            y: useTransform(scrollYProgress, [0, 0.15], [40, 0]),
-          }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
           className="section-title"
         >
           {t(locale, 'experience.title')}

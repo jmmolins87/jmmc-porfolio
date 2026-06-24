@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import {
   Code2,
   Database,
@@ -104,20 +103,14 @@ function SkillCard({ category, locale }: { category: SkillCategory; locale: Loca
 }
 
 export default function Skills({ locale }: Props) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end end'],
-  });
-
   return (
-    <section id="skills" ref={sectionRef} className="relative py-24 md:py-32">
+    <section id="skills" className="relative py-24 md:py-32">
       <div className="section-container">
         <motion.h2
-          style={{
-            opacity: useTransform(scrollYProgress, [0, 0.2], [0, 1]),
-            y: useTransform(scrollYProgress, [0, 0.2], [40, 0]),
-          }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
           className="section-title"
         >
           {t(locale, 'skills.title')}

@@ -74,3 +74,12 @@ Consult these guides before working on related tasks:
 - **aria-describedby**: Errores formulario con IDs únicos en `Contact.tsx`
 - **viewport-fit=cover**: iOS notched en `BaseLayout.astro`
 - **Site URL**: Variable de entorno `PUBLIC_SITE_URL` con fallback a hardcoded
+
+### Fase 8: Animaciones y UI
+- **Animaciones títulos**: Todos los títulos migrados de `useTransform` a `whileInView` + `fadeUp` en About, Skills, Timeline, Projects, Blog, Services, Contact — evita desaparición al centrar sección con Lenis
+- **Formulario Contact**: Migrado a `whileInView` para evitar desincronización con Lenis
+- **ThemeToggle**: Convertido a dropdown con Light/Dark/System
+- **LanguageSwitcher**: Convertido a toggle switch ES/EN
+- **Nav mapeo explícito**: `navKeys` pasa de array de strings a `{ key, section }[]` para mapear `home` → `hero`
+- **Header logo**: Convertidos SVGs artísticos (viewBox 2437×1489) a PNGs a resolución retina para renderizado fiable en header
+- **404 page**: Simplificada a HTML standalone sin dependencias React para evitar error de hidratación en SSR

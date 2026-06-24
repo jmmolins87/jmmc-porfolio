@@ -1,13 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
-import {
-  motion,
-  useScroll,
-  useTransform,
-} from 'motion/react';
+import { motion } from 'motion/react';
 import { MapPin } from 'lucide-react';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
-import { staggerContainer } from '../../lib/animations';
+import { fadeUp, fadeLeft, fadeRight, staggerContainer } from '../../lib/animations';
 import { cn } from '../../lib/utils';
 
 interface Props {
@@ -59,19 +55,14 @@ function Counter({ value, label }: { value: number; label: string }) {
 }
 
 export default function About({ locale }: Props) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end end'],
-  });
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-  const x = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
-
   return (
-    <section id="about" ref={sectionRef} className="relative py-24 md:py-32">
+    <section id="about" className="relative py-24 md:py-32">
       <div className="section-container">
         <motion.h2
-          style={{ opacity, y: useTransform(scrollYProgress, [0, 0.3], [40, 0]) }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
           className="section-title"
         >
           {t(locale, 'about.title')}
@@ -79,7 +70,10 @@ export default function About({ locale }: Props) {
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <motion.div
-            style={{ opacity, x: useTransform(scrollYProgress, [0, 0.5], [-60, 0]) }}
+            variants={fadeLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
             className="flex justify-center"
           >
             <div className={cn(
@@ -100,7 +94,10 @@ export default function About({ locale }: Props) {
           </motion.div>
 
           <motion.div
-            style={{ opacity, x }}
+            variants={fadeRight}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
             className="space-y-6"
           >
             <p className="text-lg leading-relaxed text-muted-foreground">

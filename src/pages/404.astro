@@ -1,24 +1,85 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 import { detectLocale } from '../lib/i18n';
 
 const acceptLang = Astro.request.headers.get('accept-language') || '';
 const locale = detectLocale(acceptLang);
+const title = locale === 'es' ? 'Página no encontrada' : 'Page not found';
+const backText = locale === 'es' ? 'Volver al inicio' : 'Back to home';
+const description = locale === 'es' ? 'La página que buscas no existe' : 'The page you are looking for does not exist';
 ---
 
-<BaseLayout locale={locale} title="404" description="Page not found">
-  <main class="min-h-screen flex items-center justify-center">
-    <div class="section-container text-center">
-      <h1 class="text-8xl font-bold text-gradient mb-4">404</h1>
-      <p class="text-xl text-muted-foreground mb-8">
-        {locale === 'es' ? 'Página no encontrada' : 'Page not found'}
-      </p>
-      <a
-        href="/"
-        class="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity"
-      >
-        {locale === 'es' ? 'Volver al inicio' : 'Back to home'}
-      </a>
+<!DOCTYPE html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 - {title}</title>
+    <meta name="description" content={description} />
+    <script>
+      (function() {
+        var theme = localStorage.getItem('theme');
+        var resolved = 'system';
+        if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          resolved = 'dark';
+        } else {
+          resolved = 'light';
+        }
+        document.documentElement.classList.add(resolved);
+        document.documentElement.style.colorScheme = resolved;
+      })();
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafa;
+        color: #111;
+      }
+      html.dark body {
+        background: #0a0a0f;
+        color: #fafafa;
+      }
+      .container { text-align: center; padding: 2rem; }
+      .code { font-size: 8rem; font-weight: 800; line-height: 1; margin-bottom: 1rem; }
+      html:not(.dark) .code {
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      html.dark .code {
+        background: linear-gradient(135deg, #818cf8, #c084fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .text { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.7; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        background: #6366f1;
+        color: #fff;
+        transition: opacity 0.2s;
+      }
+      .btn:hover { opacity: 0.9; }
+      html.dark .btn { background: #818cf8; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="code">404</div>
+      <p class="text">{title}</p>
+      <a class="btn" href="/">{backText} →</a>
     </div>
-  </main>
-</BaseLayout>
+  </body>
+</html>
