@@ -39,3 +39,10 @@ Consult these guides before working on related tasks:
 - **Blog pages**: `src/pages/blog/index.astro` (listado) y `src/pages/blog/[slug].astro` (post individual), ambos protegidos
 - **Artículo inicial**: "Cómo la IA está transformando el desarrollo de software" (ES + EN) en `src/content/blog/`
 - **Variables de entorno**: `BLOG_USER`, `BLOG_PASSWORD`, `JWT_SECRET` en `.env.example`
+- **Login UI**: Icono ojo para mostrar/ocultar contraseña, botón "¿Has olvidado la contraseña?" con mensaje de contacto, alertas rojas en caja de login
+
+### Fase 3: Bugs Críticos
+- **Contact Form**: Reemplazado Formspree placeholder por endpoint propio `/api/contact`
+- **Blog section**: Artículos hardcodeados reemplazados por datos dinámicos desde content collections (pasa `posts` como prop desde las páginas Astro)
+- **og-image.jpg**: Creada imagen OG 1200×630px en `public/og-image.jpg`
+- **favicon_light.ico**: Movido de `public/legacy/misc/` a `public/favicon_light.ico`

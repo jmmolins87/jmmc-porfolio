@@ -31,6 +31,8 @@ import '../styles/globals.css';
           <p class="text-sm text-muted-foreground mt-2">Acceso al Blog</p>
         </div>
 
+        <div id="error-alert" class="hidden mb-4 rounded-xl border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert"></div>
+
         <form id="login-form" class="space-y-4">
           <div>
             <label for="username" class="block text-sm font-medium mb-1 text-foreground">Usuario</label>
@@ -39,6 +41,7 @@ import '../styles/globals.css';
               name="username"
               type="text"
               required
+              autocomplete="username"
               class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               placeholder="Usuario"
             />
@@ -46,14 +49,45 @@ import '../styles/globals.css';
 
           <div>
             <label for="password" class="block text-sm font-medium mb-1 text-foreground">Contraseña</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              placeholder="Contraseña"
-            />
+            <div class="relative">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                autocomplete="current-password"
+                class="w-full rounded-xl border border-border bg-background px-4 py-2.5 pr-12 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                placeholder="Contraseña"
+              />
+              <button
+                type="button"
+                id="toggle-password"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                aria-label="Mostrar contraseña"
+                tabindex="-1"
+              >
+                <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg id="eye-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                  <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                  <line x1="2" x2="22" y1="2" y2="22" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button
+              type="button"
+              id="forgot-password"
+              class="text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+            >
+              ¿Has olvidado la contraseña?
+            </button>
           </div>
 
           <button
@@ -62,21 +96,38 @@ import '../styles/globals.css';
           >
             Entrar
           </button>
-
-          <p id="error-msg" class="text-sm text-destructive text-center hidden"></p>
         </form>
       </div>
     </div>
 
     <script>
-      document.getElementById('login-form')?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const form = e.currentTarget as HTMLFormElement;
-        const formData = new FormData(form);
-        const errorMsg = document.getElementById('error-msg')!;
-        const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const form = document.getElementById('login-form')! as HTMLFormElement;
+      const errorAlert = document.getElementById('error-alert')!;
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const passwordInput = document.getElementById('password') as HTMLInputElement;
+      const toggleBtn = document.getElementById('toggle-password')!;
+      const eyeIcon = document.getElementById('eye-icon')!;
+      const eyeOffIcon = document.getElementById('eye-off-icon')!;
+      const forgotBtn = document.getElementById('forgot-password')!;
 
-        errorMsg.classList.add('hidden');
+      toggleBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        eyeIcon.classList.toggle('hidden');
+        eyeOffIcon.classList.toggle('hidden');
+        toggleBtn.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      });
+
+      forgotBtn.addEventListener('click', () => {
+        errorAlert.textContent = 'Contacta conmigo en jmmolins87@gmail.com para restablecer tu contraseña.';
+        errorAlert.classList.remove('hidden');
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        errorAlert.classList.add('hidden');
         btn.disabled = true;
         btn.textContent = 'Entrando...';
 
@@ -92,12 +143,12 @@ import '../styles/globals.css';
             window.location.href = redirect;
           } else {
             const data = await res.json();
-            errorMsg.textContent = data.error || 'Error al iniciar sesión';
-            errorMsg.classList.remove('hidden');
+            errorAlert.textContent = data.error || 'Error al iniciar sesión';
+            errorAlert.classList.remove('hidden');
           }
         } catch {
-          errorMsg.textContent = 'Error de conexión';
-          errorMsg.classList.remove('hidden');
+          errorAlert.textContent = 'Error de conexión. Inténtalo de nuevo.';
+          errorAlert.classList.remove('hidden');
         } finally {
           btn.disabled = false;
           btn.textContent = 'Entrar';

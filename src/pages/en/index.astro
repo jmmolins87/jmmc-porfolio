@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { t } from '../../lib/i18n';
 import Header from '../../components/layout/Header';
@@ -19,6 +20,21 @@ const title = t(locale, 'seo.title');
 const description = t(locale, 'seo.description');
 const ogTitle = t(locale, 'seo.ogTitle');
 const ogDescription = t(locale, 'seo.ogDescription');
+
+const allPosts = await getCollection('blog', ({ data }) => data.lang === locale);
+const blogPosts = allPosts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5)
+  .map((post) => ({
+    id: post.id,
+    title: post.data.title,
+    description: post.data.description,
+    date: post.data.date.toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    }),
+    readTime: post.data.readTime,
+    tags: post.data.tags,
+  }));
 ---
 
 <BaseLayout {locale} {title} {description} {ogTitle} {ogDescription}>
@@ -30,7 +46,7 @@ const ogDescription = t(locale, 'seo.ogDescription');
     <Timeline locale={locale} client:load />
     <Projects locale={locale} client:load />
     <Services locale={locale} client:load />
-    <Blog locale={locale} client:load />
+    <Blog locale={locale} posts={blogPosts} client:load />
     <Contact locale={locale} client:load />
   </main>
   <Footer locale={locale} client:load />
