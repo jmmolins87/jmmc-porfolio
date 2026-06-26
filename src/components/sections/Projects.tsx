@@ -1,10 +1,11 @@
+import { useRef } from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink } from 'lucide-react';
-import type { Locale } from '../../lib/i18n';
-import { t } from '../../lib/i18n';
-import { Badge } from '../ui/badge';
-import { fadeUp, scaleIn, staggerContainer } from '../../lib/animations';
-import { cn } from '../../lib/utils';
+import type { Locale } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { fadeUp, scaleIn, staggerContainer } from '@/lib/animations';
 
 interface Props {
   locale: Locale;
@@ -102,92 +103,105 @@ const projects: Project[] = [
     description: 'Web corporativa y plataforma de servicios gráficos online.',
     tags: ['Angular', 'JavaScript', 'HTML5'],
     image: '/projects/servegraf.png',
-  },
-  {
-    title: 'PM Balaguer',
-    description: 'Plataforma de gestión para la empresa de ingeniería y proyectos.',
-    tags: ['Angular', 'TypeScript', 'Tailwind'],
-    image: '/projects/pm_balaguer.png',
-  },
-  {
-    title: 'API Platform',
-    description: 'Plataforma de integración y gestión de APIs para servicios empresariales.',
-    tags: ['Angular', 'Node.js', 'TypeScript'],
-    image: '/projects/api.png',
-  },
-  {
-    title: 'JMMC Dev',
-    description: 'Entorno de desarrollo y showcase de componentes frontend reutilizables.',
-    tags: ['Angular', 'Storybook', 'TypeScript'],
-    image: '/projects/jmmcDev.png',
-  },
-  {
-    title: 'JMMC Legacy',
-    description: 'Versión legacy del portfolio y proyectos anteriores.',
-    tags: ['Angular', 'JavaScript', 'HTML5'],
-    image: '/projects/jmmc_legacy.png',
-  },
+  }
 ];
 
 function ProjectCard({ project }: { project: Project }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 25;
+    const rotateY = (centerX - x) / 25;
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  }
+
+  function handleMouseLeave() {
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+  }
+
   return (
     <motion.div
       variants={scaleIn}
       className="group relative"
     >
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ transformStyle: 'preserve-3d' }}
+      >
       <a
         href={project.url ?? '#'}
         target={project.url ? '_blank' : undefined}
         rel={project.url ? 'noopener noreferrer' : undefined}
         className="block"
       >
-        <div className={cn(
-          'relative h-48 rounded-2xl overflow-hidden mb-4',
-          'border border-border bg-card'
-        )}>
-          <img
-            src={project.image}
-            alt={project.title}
-            loading="lazy"
-            width="400"
-            height="192"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-            <span className="text-white text-sm font-medium flex items-center gap-2">
-              {project.title}
-              <ExternalLink className="h-4 w-4" />
-            </span>
+        <Card className="overflow-hidden border-border bg-card transition-all duration-200 hover:shadow-lg">
+          <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
+            <motion.img
+              src={project.image}
+              alt={project.title}
+              loading="lazy"
+              width="400"
+              height="192"
+              className="h-full w-full object-cover"
+              whileHover={{ scale: 1.25 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+              <span className="text-white text-sm font-medium flex items-center gap-2">
+                {project.title}
+                <ExternalLink className="h-4 w-4" />
+              </span>
+            </div>
           </div>
-        </div>
 
-        <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
-          {project.title}
-        </h3>
-        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-          {project.description}
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {project.tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
-              {tag}
-            </Badge>
-          ))}
-        </div>
+          <CardHeader className="pb-2">
+            <CardTitle className="font-semibold group-hover:text-primary transition-colors">
+              {project.title}
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent className="pb-4">
+            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+              {project.description}
+            </p>
+          </CardContent>
+
+          <CardFooter className="pt-0">
+            <div className="flex flex-wrap gap-1.5">
+              {project.tags.map((tag) => (
+                <Badge key={tag} variant="secondary" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </CardFooter>
+        </Card>
       </a>
+      </div>
     </motion.div>
   );
 }
 
 export default function Projects({ locale }: Props) {
   return (
-    <section id="projects" className="relative py-24 md:py-32">
+    <section id="projects" className="relative pb-24 md:pb-32">
       <div className="section-container">
         <motion.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           className="section-title"
         >
           {t(locale, 'projects.title')}
@@ -197,13 +211,24 @@ export default function Projects({ locale }: Props) {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           className="grid sm:grid-cols-2 gap-8"
+          style={{ perspective: '800px' }}
         >
           {projects.map((project, i) => (
             <ProjectCard key={i} project={project} />
           ))}
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-sm text-muted-foreground text-center italic mt-10"
+        >
+          {t(locale, 'projects.footer')}
+        </motion.p>
       </div>
     </section>
   );

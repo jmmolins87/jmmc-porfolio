@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowDown } from 'lucide-react';
-import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/icons';
-import type { Locale } from '../../lib/i18n';
-import { t } from '../../lib/i18n';
-import { Button } from '../ui/button';
-import { cn } from '../../lib/utils';
-import { scrollTo } from '../../lib/scroll';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
+import { ArrowDown, X } from 'lucide-react';
+import { GithubIcon, LinkedInIcon } from '@/lib/icons';
+import type { Locale } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
+import { Button } from '@/components/ui';
+import { cn } from '@/lib/utils';
+import { scrollTo } from '@/lib/scroll';
 
 interface Props {
   locale: Locale;
@@ -101,19 +101,48 @@ export default function Hero({ locale }: Props) {
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springMouseX = useSpring(mouseX, { stiffness: 150, damping: 15 });
+  const springMouseY = useSpring(mouseY, { stiffness: 150, damping: 15 });
+  const rotateX = useTransform(springMouseY, [-0.5, 0.5], [8, -8]);
+  const rotateY = useTransform(springMouseX, [-0.5, 0.5], [-8, 8]);
+
+  function handleMouseMove(e: React.MouseEvent) {
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(x);
+    mouseY.set(y);
+  }
+
+  function handleMouseLeave() {
+    mouseX.set(0);
+    mouseY.set(0);
+  }
+
   const name = t(locale, 'hero.name');
 
   return (
     <section
       id="hero"
       ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{ perspective: '1200px' }}
     >
-      <GradientOrbs />
-      <ParticlesBg />
+      <motion.div
+        style={{ opacity }}
+        className="absolute inset-0 z-0"
+      >
+        <GradientOrbs />
+        <ParticlesBg />
+      </motion.div>
 
       <motion.div
-        style={{ opacity, y, scale }}
+        style={{ opacity, y, scale, rotateX, rotateY, transformStyle: 'preserve-3d' }}
         className="relative z-10 section-container text-center max-w-4xl"
       >
         <motion.p
@@ -125,19 +154,17 @@ export default function Hero({ locale }: Props) {
           {t(locale, 'hero.greeting')}
         </motion.p>
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
-          {name.split('').map((char, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 50, rotateX: -90 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{ duration: 0.4, delay: i * 0.03 }}
-              className="inline-block"
-            >
-              {char === ' ' ? '\u00A0' : char}
-            </motion.span>
-          ))}
-        </h1>
+        <div className="overflow-hidden mb-6">
+          <motion.h1
+            initial={{ clipPath: 'inset(0 100% 0 0)' }}
+            animate={{ clipPath: 'inset(0 0% 0 0)' }}
+            transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+            className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.1]"
+            style={{ fontFamily: "'Dancing Script', cursive" }}
+          >
+            {name}
+          </motion.h1>
+        </div>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
@@ -185,9 +212,9 @@ export default function Hero({ locale }: Props) {
           className="flex justify-center gap-4"
         >
           {[
-            { icon: GitHubIcon, href: 'https://github.com/juanmamc', label: 'GitHub' },
+            { icon: GithubIcon, href: 'https://github.com/juanmamc', label: 'GitHub' },
             { icon: LinkedInIcon, href: 'https://linkedin.com/in/juanmamc', label: 'LinkedIn' },
-            { icon: XIcon, href: 'https://x.com/juanmamc', label: 'X' },
+            { icon: X, href: 'https://x.com/juanmamc', label: 'X' },
           ].map(({ icon: Icon, href, label }) => (
             <a
               key={label}

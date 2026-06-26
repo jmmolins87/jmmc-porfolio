@@ -5,10 +5,20 @@ export function setLenis(lenis: { scrollTo: (target: string | HTMLElement, optio
 }
 
 export function scrollTo(target: string, options?: { offset?: number }) {
+  const el = document.getElementById(target);
+  if (!el) return;
+
   if (lenisInstance) {
-    lenisInstance.scrollTo(target, options);
+    const viewportHeight = window.innerHeight;
+    const elementHeight = el.getBoundingClientRect().height;
+    let offset = options?.offset ?? 0;
+
+    if (options?.offset === undefined && elementHeight <= viewportHeight) {
+      offset = -(viewportHeight - elementHeight) / 2;
+    }
+
+    lenisInstance.scrollTo('#' + target, { offset });
   } else {
-    const el = document.getElementById(target);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }

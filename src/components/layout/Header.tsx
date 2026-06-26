@@ -14,7 +14,6 @@ interface Props {
 }
 
 const navKeys: { key: string; section: string }[] = [
-  { key: 'home', section: 'hero' },
   { key: 'about', section: 'about' },
   { key: 'skills', section: 'skills' },
   { key: 'experience', section: 'experience' },

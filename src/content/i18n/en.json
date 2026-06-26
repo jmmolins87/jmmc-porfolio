@@ -1,5 +1,4 @@
 {
-  "nav.home": "Home",
   "nav.about": "About",
   "nav.skills": "Stack",
   "nav.experience": "Experience",
@@ -28,6 +27,15 @@
   "skills.backend": "Backend",
   "skills.devops": "DevOps & Cloud",
   "skills.ai": "AI & Automation",
+  "skills.angular": "Angular",
+  "skills.storybook": "Storybook",
+  "skills.springboot": "Spring Boot",
+  "experience.init1": "C",
+  "experience.init2": "A",
+  "experience.init3": "V",
+  "experience.init4": "D",
+  "experience.init5": "N",
+  "experience.init6": "E",
 
   "experience.title": "Experience",
   "experience.role1": "Senior Frontend Developer",
@@ -56,14 +64,15 @@
   "experience.desc6": "Front-end development and design of Orange's web platform with Angular and Ionic. Backend development with Node.js.",
 
   "projects.title": "Projects",
+  "projects.footer": "These are the most notable projects I've worked on",
 
   "services.title": "Services",
   "services.web.title": "Fullstack Web Development",
-  "services.web.desc": "Modern web apps with React, Astro, Node.js, and TypeScript. From landing pages to complex platforms.",
+  "services.web.desc": "Specialist in Angular and Storybook, building reusable component libraries with a pixel-perfect approach. I craft modern, accessible interfaces backed by a solid Spring Boot and Java backend.",
   "services.ai.title": "AI & Automation",
-  "services.ai.desc": "AI model integration, workflow automation, and intelligent chatbots.",
+  "services.ai.desc": "Intelligent automation with Claude, MCP, Skills, and Agents. I integrate AI into real workflows to optimize processes, connect tools, and boost your business productivity.",
   "services.consulting.title": "Technical Consulting",
-  "services.consulting.desc": "System architecture, code review, and technical advisory for development teams.",
+  "services.consulting.desc": "I help companies stand out in the digital world. From defining technical strategy to executing products that make a difference. Architecture, code review, and product vision for teams that want to grow.",
 
   "blog.title": "Blog",
   "blog.readMore": "Read more",

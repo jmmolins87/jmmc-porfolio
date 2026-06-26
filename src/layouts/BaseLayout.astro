@@ -2,6 +2,7 @@
 import type { Locale } from '../lib/i18n';
 import { t } from '../lib/i18n';
 import SmoothScroll from '../components/SmoothScroll';
+import GradientMorph from '../components/GradientMorph';
 import '../styles/globals.css';
 
 export interface Props {
@@ -58,7 +59,9 @@ const canonical = `${siteUrl}/${locale}/`;
     <meta name="twitter:image" content={ogImage} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="shortcut icon" href="/favicon_light.ico" />
@@ -102,6 +105,7 @@ const canonical = `${siteUrl}/${locale}/`;
     <div id="main-content">
       <slot />
     </div>
+    <GradientMorph client:only="react" />
     <SmoothScroll client:only="react" />
   </body>
 </html>

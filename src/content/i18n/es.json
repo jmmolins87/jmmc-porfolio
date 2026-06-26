@@ -1,5 +1,4 @@
 {
-  "nav.home": "Inicio",
   "nav.about": "Sobre mí",
   "nav.skills": "Stack",
   "nav.experience": "Experiencia",
@@ -17,7 +16,7 @@
   "hero.scroll": "Desliza para explorar",
 
   "about.title": "Sobre mí",
-  "about.bio": "Desarrollador fullstack con experiencia en React, Node.js, TypeScript y automatizaciones con IA. Me apasiona construir sistemas que resuelvan problemas reales y crear experiencias digitales memorables.",
+  "about.bio": "Desarrollo fullstack con base en diseño, visión de producto, IA aplicada y automatizaciones útiles. Soy un desarrollador fullstack con más de 13 años de experiencia creando productos digitales de principio a fin. Empecé en el mundo del diseño gráfico en la imprenta de mi padre, y esa base visual evolucionó hacia un perfil más completo donde conecto visión de producto, desarrollo y ejecución. Con los años he trabajado en todo el stack, participando en interfaces, lógica de negocio, integraciones y experiencias de producto escalables. Hoy también aporto un muy buen manejo aplicado de la IA, diseñando automatizaciones y flujos inteligentes para hacer los productos más útiles, eficientes y competitivos. Me gusta transformar necesidades complejas en soluciones digitales claras, con un enfoque práctico que equilibra calidad técnica, usabilidad e impacto de negocio. Me gusta trabajar en el punto donde se cruzan diseño, ingeniería e innovación práctica. Me motivan especialmente los proyectos que exigen estructura, iniciativa y capacidad para conectar ideas con ejecución real. Fuera del trabajo valoro viajar, hacer deporte, estar con mi familia y mantener conversaciones que me ayuden a seguir creciendo.",
   "about.location": "Madrid, España",
   "about.projects": "proyectos",
   "about.clients": "clientes",
@@ -28,6 +27,15 @@
   "skills.backend": "Backend",
   "skills.devops": "DevOps & Cloud",
   "skills.ai": "IA & Automatización",
+  "skills.angular": "Angular",
+  "skills.storybook": "Storybook",
+  "skills.springboot": "Spring Boot",
+  "experience.init1": "C",
+  "experience.init2": "A",
+  "experience.init3": "V",
+  "experience.init4": "D",
+  "experience.init5": "N",
+  "experience.init6": "E",
 
   "experience.title": "Experiencia",
   "experience.role1": "Senior Frontend Developer",
@@ -56,14 +64,15 @@
   "experience.desc6": "Desarrollo front-end y diseño de la plataforma web de Orange con Angular e Ionic. Desarrollo backend con Node.js.",
 
   "projects.title": "Proyectos",
+  "projects.footer": "Estos son los proyectos más destacados en los que he trabajado",
 
   "services.title": "Servicios",
   "services.web.title": "Desarrollo Web Fullstack",
-  "services.web.desc": "Aplicaciones web modernas con React, Astro, Node.js y TypeScript. Desde landing pages hasta plataformas complejas.",
+  "services.web.desc": "Especialista en Angular y Storybook, creando librerías de componentes reutilizables con un enfoque pixel-perfect. Desarrollo interfaces modernas y accesibles, respaldado por un sólido backend con Spring Boot y Java.",
   "services.ai.title": "IA y Automatización",
-  "services.ai.desc": "Integración de modelos de IA, automatización de flujos de trabajo y chatbots inteligentes.",
+  "services.ai.desc": "Automatización inteligente con Claude, MCP, Skills y Agents. Integro IA en flujos de trabajo reales para optimizar procesos, conectar herramientas y potenciar la productividad de tu negocio.",
   "services.consulting.title": "Consultoría Técnica",
-  "services.consulting.desc": "Arquitectura de sistemas, code review, y asesoramiento técnico para equipos de desarrollo.",
+  "services.consulting.desc": "Ayudo a empresas a destacar en el mundo digital. Desde definir la estrategia técnica hasta ejecutar productos que marquen la diferencia. Arquitectura, code review y visión de producto para equipos que quieren crecer.",
 
   "blog.title": "Blog",
   "blog.readMore": "Leer más",
