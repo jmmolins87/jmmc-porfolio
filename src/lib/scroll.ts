@@ -1,7 +1,21 @@
-let lenisInstance: { scrollTo: (target: string | HTMLElement, options?: { offset?: number }) => void } | null = null;
+interface LenisInstance {
+  scrollTo: (target: string | HTMLElement, options?: { offset?: number }) => void;
+  stop: () => void;
+  start: () => void;
+}
 
-export function setLenis(lenis: { scrollTo: (target: string | HTMLElement, options?: { offset?: number }) => void } | null) {
+let lenisInstance: LenisInstance | null = null;
+
+export function setLenis(lenis: LenisInstance | null) {
   lenisInstance = lenis;
+}
+
+export function stopLenis() {
+  lenisInstance?.stop();
+}
+
+export function startLenis() {
+  lenisInstance?.start();
 }
 
 export function scrollTo(target: string, options?: { offset?: number }) {

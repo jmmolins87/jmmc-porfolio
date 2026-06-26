@@ -2,7 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
+@theme {
   --color-background: #fafafa;
   --color-foreground: #0a0a0f;
   --color-card: #ffffff;
@@ -16,7 +16,9 @@
   --color-muted: #f1f5f9;
   --color-muted-foreground: #64748b;
   --color-destructive: #ef4444;
-  
+}
+
+:root {
   --about-gradient: radial-gradient(ellipse at 70% 30%, var(--color-primary)/0.08, transparent);
   --skills-gradient: conic-gradient(from 0deg at 10% 50%, var(--color-primary)/0.05, var(--color-secondary)/0.03, var(--color-primary)/0.05);
   --timeline-gradient: linear-gradient(90deg, var(--color-primary)/0.05 1px, transparent 1px);
@@ -130,6 +132,22 @@
       transition: none !important;
     }
   }
+
+  [data-slot="dialog-overlay"][data-state="open"] {
+    animation: overlay-in 200ms ease-out;
+  }
+
+  [data-slot="dialog-overlay"][data-state="closed"] {
+    animation: overlay-out 200ms ease-in;
+  }
+
+  [data-slot="dialog-content"][data-state="open"] {
+    animation: content-in 200ms ease-out;
+  }
+
+  [data-slot="dialog-content"][data-state="closed"] {
+    animation: content-out 200ms ease-in;
+  }
 }
 
 @keyframes overlay-in {
@@ -150,22 +168,6 @@
 @keyframes content-out {
   from { opacity: 1; transform: scale(1); }
   to { opacity: 0; transform: scale(0.95); }
-}
-
-@utility animate-overlay-in {
-  animation: overlay-in 200ms ease-out;
-}
-
-@utility animate-overlay-out {
-  animation: overlay-out 200ms ease-in;
-}
-
-@utility animate-content-in {
-  animation: content-in 200ms ease-out;
-}
-
-@utility animate-content-out {
-  animation: content-out 200ms ease-in;
 }
 
 @layer components {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import type { Locale } from '@/lib/i18n';
@@ -6,6 +6,7 @@ import { t } from '@/lib/i18n';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { fadeUp, staggerContainer, cardFling } from '@/lib/animations';
+import { stopLenis, startLenis } from '@/lib/scroll';
 
 interface Props {
   locale: Locale;
@@ -24,6 +25,22 @@ interface Post {
 
 export default function Blog({ locale, posts = [] }: Props) {
   const [selected, setSelected] = useState<Post | null>(null);
+
+  useEffect(() => {
+    if (selected) {
+      stopLenis();
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
+    }
+    return () => {
+      if (selected) {
+        startLenis();
+        document.documentElement.style.overflow = '';
+        document.documentElement.style.paddingRight = '';
+      }
+    };
+  }, [selected]);
 
   if (posts.length === 0) return null;
 
