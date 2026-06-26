@@ -102,10 +102,10 @@ const canonical = `${siteUrl}/${locale}/`;
       {locale === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
     </a>
 
-    <div id="main-content">
-      <slot />
-    </div>
     <GradientMorph client:only="react" />
+    <main id="main-content">
+      <slot />
+    </main>
     <SmoothScroll client:only="react" />
   </body>
 </html>

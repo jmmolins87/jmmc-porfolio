@@ -73,7 +73,7 @@ function TimelineMilestone({ exp, index, locale }: { exp: Experience; index: num
         variants={rippleNode}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, margin: '-50px' }}
+        viewport={{ once: true, margin: '-50px' }}
         className={cn(
           'md:hidden absolute w-4 h-4 rounded-full border-2 border-primary bg-background z-10',
           'left-[18px] -translate-x-1/2 -translate-y-1/2'
@@ -82,7 +82,7 @@ function TimelineMilestone({ exp, index, locale }: { exp: Experience; index: num
         <motion.span
           className="absolute inset-0 rounded-full bg-primary/20"
           animate={{ scale: [1, 1.5, 1] }}
-          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut', delay: index * 0.3 }}
+          transition={{ duration: 2, ease: 'easeInOut', delay: index * 0.3, repeat: Infinity }}
         />
       </motion.div>
       {/* Desktop pill */}
@@ -95,13 +95,13 @@ function TimelineMilestone({ exp, index, locale }: { exp: Experience; index: num
         variants={rippleNode}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, margin: '-50px' }}
+        viewport={{ once: true, margin: '-50px' }}
       >
         <motion.span
           className="absolute inset-0 rounded-xl border-2 border-primary/50"
           initial={{ scale: 1, opacity: 1 }}
           whileInView={{ scale: 2.5, opacity: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 1.5, delay: index * 0.1 + 0.3, repeat: Infinity, repeatDelay: 2 }}
         />
         <motion.span
@@ -136,7 +136,7 @@ export default function Timeline({ locale }: Props) {
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, margin: '-100px' }}
+           viewport={{ once: true, margin: '-100px' }}
           className="section-title !mb-0"
         >
           {t(locale, 'experience.title')}
@@ -180,7 +180,7 @@ export default function Timeline({ locale }: Props) {
                     variants={isEven ? fadeLeft : fadeRight}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: false, margin: '-100px' }}
+                    viewport={{ once: true, margin: '-100px' }}
                     className={cn(
                       'ml-[54px] md:ml-0 md:w-1/2',
                       isEven ? 'md:ml-auto md:pl-12' : 'md:pr-12'

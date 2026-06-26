@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'motion/react';
-import { Code, Bot, Lightbulb, type LucideIcon } from 'lucide-react';
+import { Code, Bot, Lightbulb, Cloud, type LucideIcon } from 'lucide-react';
 import type { Locale } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
 import { fadeUp, fadeLeft, fadeRight } from '@/lib/animations';
@@ -26,6 +26,11 @@ const services: ServiceItem[] = [
     titleKey: 'services.ai.title',
     descKey: 'services.ai.desc',
     icon: Bot,
+  },
+  {
+    titleKey: 'services.devops.title',
+    descKey: 'services.devops.desc',
+    icon: Cloud,
   },
   {
     titleKey: 'services.consulting.title',
@@ -97,7 +102,7 @@ function ServiceCard({ service, locale, index }: { service: ServiceItem; locale:
 
 export default function Services({ locale }: Props) {
   return (
-    <section id="services" className="relative min-h-screen flex items-center justify-center">
+    <section id="services" className="relative py-20">
       <div className="section-container">
         <motion.h2
           variants={fadeUp}
@@ -113,7 +118,7 @@ export default function Services({ locale }: Props) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, margin: '-100px' }}
-          className="grid md:grid-cols-3 gap-8"
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {services.map((service, i) => (
             <ServiceCard key={i} service={service} locale={locale} index={i} />

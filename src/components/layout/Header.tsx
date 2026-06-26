@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
 import ThemeToggle from '../ThemeToggle';
 import LanguageSwitcher from '../LanguageSwitcher';
 import { Button } from '../ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '../ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from '../ui/sheet';
 import { cn } from '../../lib/utils';
 import { scrollTo } from '../../lib/scroll';
 
@@ -89,8 +89,13 @@ export default function Header({ locale }: Props) {
                 </Button>
               </SheetTrigger>
               <SheetContent>
-                <SheetHeader>
+                <SheetHeader className="flex flex-row items-center justify-between">
                   <SheetTitle>JMMC</SheetTitle>
+                  <SheetClose asChild>
+                    <Button variant="ghost" size="icon" aria-label={locale === 'es' ? 'Cerrar menú' : 'Close menu'}>
+                      <X className="h-5 w-5" />
+                    </Button>
+                  </SheetClose>
                 </SheetHeader>
                 <div className="mt-8 flex flex-col gap-2">
                   {navKeys.map(({ key, section }) => (

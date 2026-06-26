@@ -1,20 +1,6 @@
 ---
-export const prerender = true;
+export const prerender = false;
 
-const locale = 'es';
+const acceptLang = Astro.request.headers.get('accept-language') || '';
+return Astro.redirect(`/${acceptLang.startsWith('en') ? 'en' : 'es'}/`, 302);
 ---
-
-<!doctype html>
-<html lang={locale}>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content={`0; url=/${locale}/`} />
-    <script is:inline>
-      window.location.href = '/' + (navigator.language.startsWith('en') ? 'en' : 'es') + '/';
-    </script>
-  </head>
-  <body>
-    <a href="/es/">Ir a versión español</a>
-    <a href="/en/">Go to English version</a>
-  </body>
-</html>

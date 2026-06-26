@@ -164,7 +164,7 @@ export default function Skills({ locale }: Props) {
   const active = categories.find((c) => c.titleKey === activeCategory) || categories[0];
 
   return (
-    <section id="skills" className="relative min-h-screen flex items-center justify-center noise-bg" style={{ background: 'var(--skills-gradient)' }}>
+    <section id="skills" className="relative py-20 noise-bg" style={{ background: 'var(--skills-gradient)' }}>
       <div className="section-container">
         <motion.h2
           variants={fadeUp}

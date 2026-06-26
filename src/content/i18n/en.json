@@ -71,6 +71,8 @@
   "services.web.desc": "Specialist in Angular and Storybook, building reusable component libraries with a pixel-perfect approach. I craft modern, accessible interfaces backed by a solid Spring Boot and Java backend.",
   "services.ai.title": "AI & Automation",
   "services.ai.desc": "Intelligent automation with Claude, MCP, Skills, and Agents. I integrate AI into real workflows to optimize processes, connect tools, and boost your business productivity.",
+  "services.devops.title": "DevOps Infrastructure",
+  "services.devops.desc": "Cloud infrastructure design and management with Docker, AWS, and CI/CD. Deployment automation, scaling, and monitoring for production environments.",
   "services.consulting.title": "Technical Consulting",
   "services.consulting.desc": "I help companies stand out in the digital world. From defining technical strategy to executing products that make a difference. Architecture, code review, and product vision for teams that want to grow.",
 

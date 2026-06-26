@@ -71,6 +71,8 @@
   "services.web.desc": "Especialista en Angular y Storybook, creando librerías de componentes reutilizables con un enfoque pixel-perfect. Desarrollo interfaces modernas y accesibles, respaldado por un sólido backend con Spring Boot y Java.",
   "services.ai.title": "IA y Automatización",
   "services.ai.desc": "Automatización inteligente con Claude, MCP, Skills y Agents. Integro IA en flujos de trabajo reales para optimizar procesos, conectar herramientas y potenciar la productividad de tu negocio.",
+  "services.devops.title": "Infraestructura DevOps",
+  "services.devops.desc": "Diseño y gestión de infraestructura cloud con Docker, AWS y CI/CD. Automatización de deploys, escalado y monitorización para entornos de producción.",
   "services.consulting.title": "Consultoría Técnica",
   "services.consulting.desc": "Ayudo a empresas a destacar en el mundo digital. Desde definir la estrategia técnica hasta ejecutar productos que marquen la diferencia. Arquitectura, code review y visión de producto para equipos que quieren crecer.",
 
