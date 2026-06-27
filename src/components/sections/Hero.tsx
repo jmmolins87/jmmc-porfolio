@@ -1,6 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
-import { ArrowDown, X } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import { GithubIcon, LinkedInIcon } from '@/lib/icons';
 import type { Locale } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
@@ -12,6 +12,90 @@ interface Props {
   locale: Locale;
 }
 
+function Particles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationId: number;
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 20 : 40;
+
+    const particles: {
+      x: number;
+      y: number;
+      size: number;
+      speedX: number;
+      speedY: number;
+      opacity: number;
+    }[] = [];
+
+    function resize() {
+      canvas!.width = window.innerWidth;
+      canvas!.height = window.innerHeight;
+    }
+
+    function createParticles() {
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas!.width,
+          y: Math.random() * canvas!.height,
+          size: Math.random() * 3 + 1,
+          speedX: (Math.random() - 0.5) * 0.5,
+          speedY: -(Math.random() * 0.5 + 0.2),
+          opacity: Math.random() * 0.4 + 0.1,
+        });
+      }
+    }
+
+    function animate() {
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+
+      for (const p of particles) {
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.y < -10) {
+          p.y = canvas!.height + 10;
+          p.x = Math.random() * canvas!.width;
+        }
+        if (p.x < -10) p.x = canvas!.width + 10;
+        if (p.x > canvas!.width + 10) p.x = -10;
+
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(14, 165, 233, ${p.opacity})`;
+        ctx!.fill();
+      }
+
+      animationId = requestAnimationFrame(animate);
+    }
+
+    resize();
+    createParticles();
+    animate();
+
+    window.addEventListener('resize', resize);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 pointer-events-none z-0"
+    />
+  );
+}
+
 export default function Hero({ locale }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -20,6 +104,8 @@ export default function Hero({ locale }: Props) {
   });
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const videoScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.85]);
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -53,6 +139,8 @@ export default function Hero({ locale }: Props) {
       className="relative min-h-screen flex items-center overflow-hidden"
       style={{ perspective: '1200px', background: 'linear-gradient(to bottom, var(--color-background), color-mix(in srgb, var(--color-primary) 8%, transparent), var(--color-background))' }}
     >
+      <Particles />
+
       <motion.div
         style={{ opacity, y }}
         className="relative z-10 w-full"
@@ -131,7 +219,6 @@ export default function Hero({ locale }: Props) {
               {[
                 { icon: GithubIcon, href: 'https://github.com/juanmamc', label: 'GitHub' },
                 { icon: LinkedInIcon, href: 'https://linkedin.com/in/juanmamc', label: 'LinkedIn' },
-                { icon: X, href: 'https://x.com/juanmamc', label: 'X' },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -157,20 +244,26 @@ export default function Hero({ locale }: Props) {
             transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="hidden lg:flex justify-center items-center"
           >
-            <div className={cn(
-              'relative h-[400px] w-[400px] xl:h-[500px] xl:w-[500px]',
-              'rounded-[32px] overflow-hidden',
-              'border-2 border-primary/20',
-              'bg-card shadow-2xl'
-            )}>
-              <img
-                src="/imgs/me.png"
-                alt="Juanma MC"
+            <motion.div
+              style={{ scale: videoScale, opacity: videoOpacity }}
+              className={cn(
+                'relative h-[400px] w-[400px] xl:h-[500px] xl:w-[500px]',
+                'rounded-[32px] overflow-hidden',
+                'border-2 border-primary/20',
+                'bg-card shadow-2xl'
+              )}
+            >
+              <video
+                src="/videos/me-greeting-edit.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
                 width="500"
                 height="500"
                 className="h-full w-full object-cover"
               />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </motion.div>

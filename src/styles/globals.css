@@ -3,18 +3,18 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-background: #fafafa;
-  --color-foreground: #0a0a0f;
+  --color-background: #f8fafc;
+  --color-foreground: #0f172a;
   --color-card: #ffffff;
-  --color-card-foreground: #0a0a0f;
-  --color-border: #e5e5e5;
-  --color-primary: #7c3aed;
-  --color-primary-foreground: #fafafa;
-  --color-secondary: #f5f3ff;
-  --color-secondary-foreground: #1e1b4b;
-  --color-accent: #a78bfa;
-  --color-muted: #f1f5f9;
-  --color-muted-foreground: #475569;
+  --color-card-foreground: #0f172a;
+  --color-border: #e2e8f0;
+  --color-primary: #0ea5e9;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #e0f2fe;
+  --color-secondary-foreground: #0c4a6e;
+  --color-accent: #06b6d4;
+  --color-muted: #e2e8f0;
+  --color-muted-foreground: #64748b;
   --color-destructive: #ef4444;
 }
 
@@ -27,27 +27,27 @@
   --services-gradient: radial-gradient(ellipse at 50% 100%, var(--color-primary)/0.08, transparent);
   --contact-gradient: radial-gradient(ellipse at 50% 50%, var(--color-primary)/0.1, transparent);
   
-  --shimmer-from: oklch(0.5 0.3 290 / 0.3);
-  --shimmer-to: oklch(0.5 0.3 290 / 0.6);
+  --shimmer-from: oklch(0.6 0.15 200 / 0.3);
+  --shimmer-to: oklch(0.6 0.15 200 / 0.6);
 }
 
 .dark {
-  --color-background: #0a0a0f;
-  --color-foreground: #fafafa;
-  --color-card: #14141f;
-  --color-card-foreground: #fafafa;
-  --color-border: #1e1e2e;
-  --color-primary: #a78bfa;
-  --color-primary-foreground: #0a0a0f;
-  --color-secondary: #1e1b4b;
-  --color-secondary-foreground: #f5f3ff;
-  --color-accent: #7c3aed;
-  --color-muted: #1e1e2e;
+  --color-background: #0f172a;
+  --color-foreground: #f1f5f9;
+  --color-card: #1e293b;
+  --color-card-foreground: #f1f5f9;
+  --color-border: #334155;
+  --color-primary: #38bdf8;
+  --color-primary-foreground: #0f172a;
+  --color-secondary: #082f49;
+  --color-secondary-foreground: #e0f2fe;
+  --color-accent: #0891b2;
+  --color-muted: #1e293b;
   --color-muted-foreground: #94a3b8;
   --color-destructive: #f87171;
   
-  --shimmer-from: oklch(0.7 0.25 290 / 0.3);
-  --shimmer-to: oklch(0.7 0.25 290 / 0.6);
+  --shimmer-from: oklch(0.7 0.15 200 / 0.3);
+  --shimmer-to: oklch(0.7 0.15 200 / 0.6);
 }
 
 @layer base {

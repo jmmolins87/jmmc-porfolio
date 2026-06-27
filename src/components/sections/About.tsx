@@ -70,7 +70,7 @@ export default function About({ locale }: Props) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="section-title !mb-0"
+          className="section-title"
         >
           {t(locale, 'about.title')}
         </motion.h2>

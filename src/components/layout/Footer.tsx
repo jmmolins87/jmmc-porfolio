@@ -1,4 +1,4 @@
-import { ChevronUp, Mail, X } from 'lucide-react';
+import { ChevronUp, Mail } from 'lucide-react';
 import { GithubIcon, LinkedInIcon } from '@/lib/icons';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
@@ -69,7 +69,6 @@ export default function Footer({ locale }: Props) {
                 {[
                   { icon: GithubIcon, href: 'https://github.com/juanmamc', label: 'GitHub' },
                   { icon: LinkedInIcon, href: 'https://linkedin.com/in/juanmamc', label: 'LinkedIn' },
-                  { icon: X, href: 'https://x.com/juanmamc', label: 'X' },
                 ].map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}

@@ -87,14 +87,14 @@ export default function Blog({ locale, posts = [] }: Props) {
   if (posts.length === 0) return null;
 
   return (
-    <section id="blog" className="relative pb-24 md:pb-32">
+    <section id="blog" className="relative py-20">
       <div className="section-container">
         <motion.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="section-title !mb-0"
+          className="section-title"
         >
           {t(locale, 'blog.title')}
         </motion.h2>
