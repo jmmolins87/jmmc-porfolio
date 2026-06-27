@@ -1,0 +1,20 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+---
+
+<DashboardLayout title="Dashboard">
+  <main class="pt-24 pb-24">
+    <div class="section-container">
+      <h1 class="section-title mb-8">Dashboard</h1>
+      <div class="grid gap-4 md:grid-cols-2 max-w-2xl">
+        <a
+          href="/dashboard/blog"
+          class="block p-6 rounded-2xl border border-border bg-card hover:border-primary/30 hover:glow-sm transition-all"
+        >
+          <h2 class="text-lg font-semibold mb-2">Blog</h2>
+          <p class="text-sm text-muted-foreground">Crear y gestionar artículos del blog</p>
+        </a>
+      </div>
+    </div>
+  </main>
+</DashboardLayout>

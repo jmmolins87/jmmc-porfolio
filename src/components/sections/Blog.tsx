@@ -55,6 +55,17 @@ export default function Blog({ locale, posts = [] }: Props) {
     return () => observer.disconnect();
   }, [posts]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (activeIndex < posts.length - 1) {
+        goNext();
+      } else {
+        scrollToCard(0);
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [activeIndex, posts.length]);
+
   const scrollToCard = useCallback((index: number) => {
     const container = containerRef.current;
     const card = cardsRef.current[index];
@@ -99,14 +110,12 @@ export default function Blog({ locale, posts = [] }: Props) {
           {t(locale, 'blog.title')}
         </motion.h2>
 
-        <div className="relative">
-          <div className="absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none bg-gradient-to-l from-background via-background/60 to-transparent z-[2]" />
+        <div className="relative flex items-center">
           <button
             onClick={goPrev}
             disabled={activeIndex === 0}
             className={cn(
-              'absolute -left-3 md:left-0 top-1/2 -translate-y-1/2 z-10',
-              'flex h-10 w-10 items-center justify-center rounded-full',
+              'hidden md:flex shrink-0 mr-4 h-10 w-10 items-center justify-center rounded-full z-10',
               'border border-border bg-background/80 backdrop-blur-sm shadow-sm',
               'hover:bg-muted transition-all cursor-pointer',
               activeIndex === 0 && 'opacity-30 pointer-events-none'
@@ -118,7 +127,7 @@ export default function Blog({ locale, posts = [] }: Props) {
 
           <div
             ref={containerRef}
-            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-1 py-2 [&::-webkit-scrollbar]:hidden"
+            className="flex-1 max-w-[800px] mx-auto flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-1 py-2 [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {posts.map((post, i) => (
@@ -126,7 +135,7 @@ export default function Blog({ locale, posts = [] }: Props) {
                 key={post.id}
                 ref={(el) => { cardsRef.current[i] = el; }}
                 data-index={i}
-                className="snap-start shrink-0 w-[85%] md:w-[48%] lg:w-[32%]"
+                className="snap-start shrink-0 w-[75%]"
               >
                 <article
                   onClick={() => openPost(post)}
@@ -173,8 +182,7 @@ export default function Blog({ locale, posts = [] }: Props) {
             onClick={goNext}
             disabled={activeIndex === posts.length - 1}
             className={cn(
-              'absolute -right-3 md:right-0 top-1/2 -translate-y-1/2 z-10',
-              'flex h-10 w-10 items-center justify-center rounded-full',
+              'hidden md:flex shrink-0 ml-4 h-10 w-10 items-center justify-center rounded-full z-10',
               'border border-border bg-background/80 backdrop-blur-sm shadow-sm',
               'hover:bg-muted transition-all cursor-pointer',
               activeIndex === posts.length - 1 && 'opacity-30 pointer-events-none'

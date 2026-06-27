@@ -1,0 +1,84 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { db } from '../../../db';
+import { posts } from '../../../db/schema';
+import { desc } from 'drizzle-orm';
+import { marked } from 'marked';
+
+const locale = 'es';
+
+const allPosts = await db
+  .select()
+  .from(posts)
+  .orderBy(desc(posts.publishedAt));
+
+const blogPosts = allPosts
+  .slice(0, 5)
+  .map((post) => ({
+    id: post.slug,
+    title: post.titleEs,
+    description: post.descriptionEs ?? '',
+    date: post.publishedAt.toLocaleDateString('es-ES', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    }),
+    readTime: post.readTimeEs ?? '5 min',
+    tags: post.tags,
+    content: marked(post.contentEs),
+  }));
+---
+
+<BaseLayout {locale} title="Blog | Juanma MC">
+  <main class="pt-24 pb-24">
+    <div class="section-container">
+      <h1 class="section-title mb-12">Blog</h1>
+
+      <div class="max-w-3xl mx-auto space-y-6">
+        {
+          allPosts.map((post) => (
+            <a
+              href={`/es/blog/${post.slug}`}
+              class="block group rounded-2xl border border-border bg-card p-6 hover:glow-sm transition-all duration-300"
+            >
+              {post.coverImage && (
+                <img
+                  src={post.coverImage}
+                  alt={post.titleEs}
+                  class="w-full h-48 object-cover rounded-xl mb-4"
+                  loading="lazy"
+                />
+              )}
+              <div class="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                <time datetime={post.publishedAt.toISOString()}>
+                  {post.publishedAt.toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+                <span>{post.readTimeEs} min de lectura</span>
+              </div>
+
+              <h2 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+                {post.titleEs}
+              </h2>
+
+              <p class="text-muted-foreground text-sm mb-4 line-clamp-2">
+                {post.descriptionEs}
+              </p>
+
+              <div class="flex flex-wrap gap-1.5">
+                {post.tags.map((tag: string) => (
+                  <span class="inline-flex items-center rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+</BaseLayout>

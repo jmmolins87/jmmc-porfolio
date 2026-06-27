@@ -1,0 +1,74 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { db } from '../../../../db';
+import { posts } from '../../../../db/schema';
+import { eq } from 'drizzle-orm';
+import { marked } from 'marked';
+
+const locale = 'es';
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/es/blog');
+}
+
+const [post] = await db.select().from(posts).where(eq(posts.slug, slug));
+
+if (!post) {
+  return Astro.redirect('/es/blog');
+}
+
+const htmlContent = marked(post.contentEs);
+---
+
+<BaseLayout {locale} title={`${post.titleEs} | Blog | Juanma MC`}>
+  <main class="pt-24 pb-24">
+    <div class="section-container">
+      <article class="max-w-3xl mx-auto">
+        <div class="mb-8">
+          <a
+            href="/es/blog"
+            class="text-sm text-primary hover:underline mb-4 inline-block"
+          >
+            ← Volver al blog
+          </a>
+
+          {post.coverImage && (
+            <img
+              src={post.coverImage}
+              alt={post.titleEs}
+              class="w-full h-64 object-cover rounded-2xl mb-6"
+            />
+          )}
+
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">{post.titleEs}</h1>
+
+          <div class="flex items-center gap-4 text-sm text-muted-foreground">
+            <time datetime={post.publishedAt.toISOString()}>
+              {post.publishedAt.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+            <span>{post.readTimeEs} min de lectura</span>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            {post.tags.map((tag: string) => (
+              <span class="inline-flex items-center rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div class="prose prose-neutral dark:prose-invert max-w-none [&_img]:rounded-xl [&_img]:my-6 [&_h2]:mt-8 [&_h2]:mb-4 [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_li]:text-muted-foreground [&_strong]:text-foreground [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_code]:font-mono [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:rounded-xl [&_pre]:overflow-x-auto">
+          <Fragment set:html={htmlContent} />
+        </div>
+      </article>
+    </div>
+  </main>
+</BaseLayout>

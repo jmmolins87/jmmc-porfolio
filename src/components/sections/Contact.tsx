@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Send, X, Mail } from 'lucide-react';
+import { Send, Mail } from 'lucide-react';
 import { toast } from 'sonner';
 import { GithubIcon, LinkedInIcon } from '@/lib/icons';
 import { useForm } from 'react-hook-form';
@@ -247,7 +247,6 @@ export default function Contact({ locale }: Props) {
               { icon: Mail, href: 'mailto:hello@jmmc.dev', label: 'Email' },
               { icon: GithubIcon, href: 'https://github.com/juanmamc', label: 'GitHub' },
               { icon: LinkedInIcon, href: 'https://linkedin.com/in/juanmamc', label: 'LinkedIn' },
-              { icon: X, href: 'https://x.com/juanmamc', label: 'X' },
             ].map(({ icon: Icon, href, label }) => (
               <motion.a
                 key={label}

@@ -1,0 +1,38 @@
+---
+import DashboardLayout from '../../../../layouts/DashboardLayout.astro';
+import { db } from '../../../../db';
+import { posts } from '../../../../db/schema';
+import { eq } from 'drizzle-orm';
+
+const { id } = Astro.params;
+if (!id) return Astro.redirect('/dashboard/blog');
+
+const [post] = await db.select().from(posts).where(eq(posts.id, id));
+if (!post) return Astro.redirect('/dashboard/blog');
+---
+
+<DashboardLayout title={`Editar: ${post.title}`}>
+  <div class="section-container">
+    <div class="mb-8">
+      <a href="/dashboard/blog" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+        ← Volver al listado
+      </a>
+      <h1 class="section-title mt-2">Editar post</h1>
+    </div>
+
+    <div id="post-form" data-post={JSON.stringify(post)}></div>
+  </div>
+
+  <script>
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+    import PostForm from '../../../../components/dashboard/PostForm';
+
+    const container = document.getElementById('post-form');
+    const post = JSON.parse(container?.dataset.post ?? 'null');
+    if (container && post) {
+      const root = createRoot(container);
+      root.render(React.createElement(PostForm, { mode: 'edit', initialData: post }));
+    }
+  </script>
+</DashboardLayout>

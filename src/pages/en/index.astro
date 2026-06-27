@@ -1,10 +1,12 @@
 ---
 export const prerender = true;
 
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { t } from '../../lib/i18n';
 import { renderMarkdown } from '../../lib/markdown';
+import { db } from '../../db';
+import { posts } from '../../db/schema';
+import { eq, desc } from 'drizzle-orm';
 import Header from '../../components/layout/Header';
 import SectionDivider from '../../components/SectionDivider';
 import Hero from '../../components/sections/Hero';
@@ -23,20 +25,24 @@ const description = t(locale, 'seo.description');
 const ogTitle = t(locale, 'seo.ogTitle');
 const ogDescription = t(locale, 'seo.ogDescription');
 
-const allPosts = await getCollection('blog', ({ data }) => data.lang === locale);
+const allPosts = await db
+  .select()
+  .from(posts)
+  .where(eq(posts.lang, locale))
+  .orderBy(desc(posts.publishedAt));
+
 const blogPosts = allPosts
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 5)
   .map((post) => ({
-    id: post.id,
-    title: post.data.title,
-    description: post.data.description,
-    date: post.data.date.toLocaleDateString('en-US', {
+    id: post.slug,
+    title: post.title,
+    description: post.description ?? '',
+    date: post.publishedAt.toLocaleDateString('en-US', {
       year: 'numeric', month: 'long', day: 'numeric',
     }),
-    readTime: post.data.readTime,
-    tags: post.data.tags,
-    content: renderMarkdown(post.body ?? ''),
+    readTime: post.readTime ?? '5 min',
+    tags: post.tags,
+    content: renderMarkdown(post.content),
   }));
 ---
 

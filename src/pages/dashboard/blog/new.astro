@@ -1,0 +1,28 @@
+---
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+---
+
+<DashboardLayout title="Nuevo post">
+  <div class="section-container">
+    <div class="mb-8">
+      <a href="/dashboard/blog" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+        ← Volver al listado
+      </a>
+      <h1 class="section-title mt-2">Nuevo post</h1>
+    </div>
+
+    <div id="post-form"></div>
+  </div>
+
+  <script>
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+    import PostForm from '../../../components/dashboard/PostForm';
+
+    const container = document.getElementById('post-form');
+    if (container) {
+      const root = createRoot(container);
+      root.render(React.createElement(PostForm, { mode: 'create' }));
+    }
+  </script>
+</DashboardLayout>

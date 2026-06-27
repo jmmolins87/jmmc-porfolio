@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
 import { ArrowDown } from 'lucide-react';
 import { GithubIcon, LinkedInIcon } from '@/lib/icons';
@@ -6,7 +6,7 @@ import type { Locale } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { scrollTo } from '@/lib/scroll';
+import { scrollTo, stopLenis, startLenis } from '@/lib/scroll';
 
 interface Props {
   locale: Locale;
@@ -98,6 +98,9 @@ function Particles() {
 
 export default function Hero({ locale }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoStarted, setVideoStarted] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
@@ -106,6 +109,37 @@ export default function Hero({ locale }: Props) {
   const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const videoScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.85]);
   const videoOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+
+  useEffect(() => {
+    let triggered = false;
+    const onScroll = async () => {
+      if (triggered || videoStarted) return;
+      triggered = true;
+      const video = videoRef.current;
+      if (!video) return;
+      if (video.readyState < 3) {
+        await new Promise<void>(resolve => {
+          video.addEventListener('canplay', () => resolve(), { once: true });
+        });
+      }
+      stopLenis();
+      setVideoStarted(true);
+      try { await video.play(); } catch { startLenis(); }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [videoStarted]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !videoStarted) return;
+    const onEnded = () => {
+      setVideoEnded(true);
+      startLenis();
+    };
+    video.addEventListener('ended', onEnded);
+    return () => video.removeEventListener('ended', onEnded);
+  }, [videoStarted]);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -136,7 +170,7 @@ export default function Hero({ locale }: Props) {
       ref={sectionRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-screen flex items-center overflow-hidden"
+      className={cn('min-h-screen flex items-center overflow-hidden', videoStarted && !videoEnded ? 'sticky top-0 z-10' : 'relative')}
       style={{ perspective: '1200px', background: 'linear-gradient(to bottom, var(--color-background), color-mix(in srgb, var(--color-primary) 8%, transparent), var(--color-background))' }}
     >
       <Particles />
@@ -159,7 +193,7 @@ export default function Hero({ locale }: Props) {
               {t(locale, 'hero.greeting')}
             </motion.p>
 
-            <div className="overflow-hidden mb-6">
+            <div className="mb-6">
               <motion.h1
                 initial={{ clipPath: 'inset(0 100% 0 0)' }}
                 animate={{ clipPath: 'inset(0 0% 0 0)' }}
@@ -254,10 +288,9 @@ export default function Hero({ locale }: Props) {
               )}
             >
               <video
+                ref={videoRef}
                 src="/videos/me-greeting-edit.mp4"
-                autoPlay
                 muted
-                loop
                 playsInline
                 width="500"
                 height="500"
@@ -270,13 +303,20 @@ export default function Hero({ locale }: Props) {
 
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, y: [0, 8, 0] }}
-        transition={{ opacity: { delay: 1.5 }, y: { duration: 2, repeat: Infinity } }}
+        animate={videoStarted
+          ? (videoEnded ? { opacity: 1, y: [0, 8, 0] } : { opacity: 0.5 })
+          : { opacity: 0 }
+        }
+        transition={videoEnded ? { opacity: { delay: 0 }, y: { duration: 2, repeat: Infinity } } : { duration: 0.6 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
       >
         <button
-          onClick={() => scrollTo('about')}
-          className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+          onClick={() => videoEnded && scrollTo('about')}
+          disabled={!videoEnded}
+          className={cn(
+            'flex flex-col items-center gap-2 transition-colors',
+            videoEnded ? 'text-muted-foreground hover:text-primary cursor-pointer' : 'text-muted-foreground/30 cursor-default'
+          )}
           aria-label={t(locale, 'hero.scroll')}
         >
           <span className="text-xs font-medium">{t(locale, 'hero.scroll')}</span>

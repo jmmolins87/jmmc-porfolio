@@ -135,14 +135,14 @@ export default function About({ locale }: Props) {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              transition={{ staggerChildren: 0.04 }}
+              transition={{ staggerChildren: 0.025 }}
               className="text-lg leading-relaxed text-muted-foreground"
             >
               {t(locale, 'about.bio').split(' ').map((word, i) => (
                 <motion.span
                   key={i}
                   variants={i % 3 === 0 ? wordFly : i % 3 === 1 ? wordFlyLeft : wordFlyRight}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                   className="inline-block mr-[0.3em]"
                 >
                   {word}

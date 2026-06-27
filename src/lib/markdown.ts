@@ -1,17 +1,22 @@
+import { marked } from 'marked';
+
 export function renderMarkdown(md: string): string {
-  let html = md
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/`(.+?)`/g, '<code>$1</code>')
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-    .replace(/\n\n/g, '</p><p>');
-
-  html = html.replace(/^(?!<[hou])(?!<\/p>)(.+)$/gm, '<p>$1</p>');
-  html = html.replace(/(<p>)?(<\/?[hou].*?>)(<\/p>)?/g, '$2');
-  html = html.replace(/<p><\/p>/g, '');
-
+  if (!md) return '<div class="prose prose-sm max-w-none"></div>';
+  const html = marked.parse(md) as string;
   return `<div class="prose prose-sm max-w-none">${html}</div>`;
+}
+
+export function calcReadTime(content: string): string {
+  const words = content.split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.ceil(words / 200));
+  return `${minutes} min`;
+}
+
+export function slugify(title: string): string {
+  return title
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }

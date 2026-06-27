@@ -1,0 +1,81 @@
+---
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import { db } from '../../../db';
+import { posts } from '../../../db/schema';
+import { desc } from 'drizzle-orm';
+
+const allPosts = await db.select().from(posts).orderBy(desc(posts.publishedAt));
+
+const grouped: { groupKey: string; es: typeof allPosts[number] | null; en: typeof allPosts[number] | null }[] = [];
+const groupMap = new Map<string, { es: typeof allPosts[number] | null; en: typeof allPosts[number] | null }>();
+
+for (const post of allPosts) {
+  const key = post.groupKey ?? post.slug;
+  if (!groupMap.has(key)) {
+    groupMap.set(key, { es: null, en: null });
+  }
+  const pair = groupMap.get(key)!;
+  if (post.lang === 'es') pair.es = post;
+  else pair.en = post;
+}
+
+for (const [groupKey, pair] of groupMap) {
+  if (pair.es && pair.en) {
+    grouped.push({ groupKey, ...pair });
+  } else {
+    grouped.push({ groupKey, es: pair.es, en: pair.en });
+  }
+}
+---
+
+<DashboardLayout title="Blog">
+  <div class="section-container">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="section-title">Blog Posts</h1>
+      <a
+        href="/dashboard/blog/new"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+      >
+        + Nuevo post
+      </a>
+    </div>
+
+    <div id="post-list" data-posts={JSON.stringify(grouped)}>
+      <p class="text-muted-foreground text-center py-12">Cargando...</p>
+    </div>
+  </div>
+
+  <script>
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+    import PostList from '../../../components/dashboard/PostList';
+
+    const container = document.getElementById('post-list');
+    const groups = JSON.parse(container?.dataset.posts ?? '[]');
+
+    let currentGroups = groups;
+
+    function render() {
+      if (!container) return;
+      container.innerHTML = '';
+      const root = createRoot(container);
+      root.render(
+        React.createElement(PostList, {
+          groups: currentGroups,
+          onDelete: (id: string) => {
+            currentGroups = currentGroups
+              .map((g: { es: { id: string } | null; en: { id: string } | null }) => ({
+                ...g,
+                es: g.es?.id === id ? null : g.es,
+                en: g.en?.id === id ? null : g.en,
+              }))
+              .filter((g: { es: { id: string } | null; en: { id: string } | null }) => g.es || g.en);
+            render();
+          },
+        })
+      );
+    }
+
+    render();
+  </script>
+</DashboardLayout>

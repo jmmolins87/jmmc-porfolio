@@ -1,6 +1,8 @@
 ---
 import '../styles/globals.css';
 import { detectLocale, t } from '../lib/i18n';
+import { ToastProvider } from '../components/ui/toast-provider';
+import LoginForm from '../components/LoginForm';
 
 const acceptLang = Astro.request.headers.get('accept-language') || '';
 const locale = detectLocale(acceptLang);
@@ -13,6 +15,11 @@ const locale = detectLocale(acceptLang);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{t(locale, 'login.title')}</title>
     <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon_light.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script is:inline>
       (function() {
         var theme = localStorage.getItem('theme');
@@ -28,152 +35,8 @@ const locale = detectLocale(acceptLang);
     </script>
   </head>
   <body class="noise-bg min-h-screen antialiased selection:bg-primary selection:text-primary-foreground flex items-center justify-center">
-    <div class="w-full max-w-sm mx-auto px-4">
-      <div class="rounded-2xl border border-border bg-card p-8">
-        <div class="text-center mb-8">
-          <a href="/" class="text-2xl font-bold tracking-tight hover:text-primary transition-colors">JMMC</a>
-          <p class="text-sm text-muted-foreground mt-2">{t(locale, 'login.access')}</p>
-        </div>
-
-        <div id="error-alert" class="hidden mb-4 rounded-xl border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert"></div>
-
-        <form id="login-form" class="space-y-4">
-          <div>
-            <label for="username" class="block text-sm font-medium mb-1 text-foreground">{t(locale, 'login.username')}</label>
-            <input
-              id="username"
-              name="username"
-              type="text"
-              required
-              autocomplete="username"
-              class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              placeholder={t(locale, 'login.username')}
-            />
-          </div>
-
-          <div>
-            <label for="password" class="block text-sm font-medium mb-1 text-foreground">{t(locale, 'login.password')}</label>
-            <div class="relative">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                autocomplete="current-password"
-                class="w-full rounded-xl border border-border bg-background px-4 py-2.5 pr-12 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                placeholder={t(locale, 'login.password')}
-              />
-              <button
-                type="button"
-                id="toggle-password"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                aria-label={t(locale, 'login.showPassword')}
-                tabindex="-1"
-              >
-                <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                <svg id="eye-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
-                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
-                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
-                  <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
-                  <line x1="2" x2="22" y1="2" y2="22" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="flex justify-end">
-            <button
-              type="button"
-              id="forgot-password"
-              class="text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-            >
-              {t(locale, 'login.forgot')}
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            class="w-full rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer"
-          >
-            {t(locale, 'login.enter')}
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <script>
-      const form = document.getElementById('login-form')! as HTMLFormElement;
-      const errorAlert = document.getElementById('error-alert')!;
-      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-      const passwordInput = document.getElementById('password') as HTMLInputElement;
-      const toggleBtn = document.getElementById('toggle-password')!;
-      const eyeIcon = document.getElementById('eye-icon')!;
-      const eyeOffIcon = document.getElementById('eye-off-icon')!;
-      const forgotBtn = document.getElementById('forgot-password')!;
-
-      const locale = document.documentElement.lang;
-
-      const strings = {
-        show: locale === 'es' ? 'Mostrar contraseña' : 'Show password',
-        hide: locale === 'es' ? 'Ocultar contraseña' : 'Hide password',
-        entering: locale === 'es' ? 'Entrando...' : 'Signing in...',
-        enter: locale === 'es' ? 'Entrar' : 'Sign in',
-        forgotMessage: locale === 'es'
-          ? 'Contacta conmigo en jmmolins87@gmail.com para restablecer tu contraseña.'
-          : 'Contact me at jmmolins87@gmail.com to reset your password.',
-        error: locale === 'es' ? 'Error al iniciar sesión' : 'Invalid credentials',
-        connectionError: locale === 'es'
-          ? 'Error de conexión. Inténtalo de nuevo.'
-          : 'Connection error. Please try again.',
-      };
-
-      toggleBtn.addEventListener('click', () => {
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
-        eyeIcon.classList.toggle('hidden');
-        eyeOffIcon.classList.toggle('hidden');
-        toggleBtn.setAttribute('aria-label', isPassword ? strings.hide : strings.show);
-      });
-
-      forgotBtn.addEventListener('click', () => {
-        errorAlert.textContent = strings.forgotMessage;
-        errorAlert.classList.remove('hidden');
-      });
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-
-        errorAlert.classList.add('hidden');
-        btn.disabled = true;
-        btn.textContent = strings.entering;
-
-        try {
-          const res = await fetch('/api/login', {
-            method: 'POST',
-            body: formData,
-          });
-
-          if (res.ok) {
-            const params = new URLSearchParams(window.location.search);
-            const redirect = params.get('redirect') || '/blog';
-            window.location.href = redirect;
-          } else {
-            const data = await res.json();
-            errorAlert.textContent = data.error || strings.error;
-            errorAlert.classList.remove('hidden');
-          }
-        } catch {
-          errorAlert.textContent = strings.connectionError;
-          errorAlert.classList.remove('hidden');
-        } finally {
-          btn.disabled = false;
-          btn.textContent = strings.enter;
-        }
-      });
-    </script>
+    <ToastProvider client:load>
+      <LoginForm client:load locale={locale as 'es' | 'en'} />
+    </ToastProvider>
   </body>
 </html>

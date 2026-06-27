@@ -1,0 +1,69 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { db } from '../../../db';
+import { posts } from '../../../db/schema';
+import { desc } from 'drizzle-orm';
+
+const locale = 'en';
+
+const allPosts = await db
+  .select()
+  .from(posts)
+  .orderBy(desc(posts.publishedAt));
+---
+
+<BaseLayout {locale} title="Blog | Juanma MC">
+  <main class="pt-24 pb-24">
+    <div class="section-container">
+      <h1 class="section-title mb-12">Blog</h1>
+
+      <div class="max-w-3xl mx-auto space-y-6">
+        {
+          allPosts.map((post) => (
+            <a
+              href={`/en/blog/${post.slug}`}
+              class="block group rounded-2xl border border-border bg-card p-6 hover:glow-sm transition-all duration-300"
+            >
+              {post.coverImage && (
+                <img
+                  src={post.coverImage}
+                  alt={post.titleEn}
+                  class="w-full h-48 object-cover rounded-xl mb-4"
+                  loading="lazy"
+                />
+              )}
+              <div class="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                <time datetime={post.publishedAt.toISOString()}>
+                  {post.publishedAt.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+                <span>{post.readTimeEn} min read</span>
+              </div>
+
+              <h2 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+                {post.titleEn}
+              </h2>
+
+              <p class="text-muted-foreground text-sm mb-4 line-clamp-2">
+                {post.descriptionEn}
+              </p>
+
+              <div class="flex flex-wrap gap-1.5">
+                {post.tags.map((tag: string) => (
+                  <span class="inline-flex items-center rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+</BaseLayout>

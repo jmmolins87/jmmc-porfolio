@@ -101,7 +101,7 @@ export const wordFly: Variants = {
     rotateZ: 0,
     scale: 1,
     transition: {
-      duration: 0.6,
+      duration: 0.4,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -115,7 +115,7 @@ export const wordFlyLeft: Variants = {
     rotateZ: 0,
     scale: 1,
     transition: {
-      duration: 0.7,
+      duration: 0.45,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -129,7 +129,7 @@ export const wordFlyRight: Variants = {
     rotateZ: 0,
     scale: 1,
     transition: {
-      duration: 0.7,
+      duration: 0.45,
       ease: [0.22, 1, 0.36, 1],
     },
   },
