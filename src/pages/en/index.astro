@@ -4,6 +4,7 @@ export const prerender = true;
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { t } from '../../lib/i18n';
+import { renderMarkdown } from '../../lib/markdown';
 import Header from '../../components/layout/Header';
 import SectionDivider from '../../components/SectionDivider';
 import Hero from '../../components/sections/Hero';
@@ -35,6 +36,7 @@ const blogPosts = allPosts
     }),
     readTime: post.data.readTime,
     tags: post.data.tags,
+    content: renderMarkdown(post.body ?? ''),
   }));
 ---
 

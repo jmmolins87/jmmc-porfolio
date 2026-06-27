@@ -102,6 +102,7 @@
   "contact.sending": "Enviando...",
   "contact.success": "Mensaje enviado correctamente",
   "contact.error": "Error al enviar el mensaje",
+  "contact.connectionError": "Error de conexión. Inténtalo de nuevo.",
 
   "footer.copyright": "© 2026 Juanma MC. Todos los derechos reservados.",
   "footer.backToTop": "Volver arriba",

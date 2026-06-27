@@ -8,6 +8,10 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Rules (always follow)
+
+- **Never commit build artifacts**: `coverage/`, `dist/`, `.astro/`, `node_modules/` must always be in `.gitignore`. If you generate `coverage/` via `vitest --coverage`, verify `.gitignore` has `coverage/` before any git operation.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
@@ -74,6 +78,21 @@ Consult these guides before working on related tasks:
 - **aria-describedby**: Errores formulario con IDs únicos en `Contact.tsx`
 - **viewport-fit=cover**: iOS notched en `BaseLayout.astro`
 - **Site URL**: Variable de entorno `PUBLIC_SITE_URL` con fallback a hardcoded
+
+### Fase 9: Testing con Coverage >80%
+- **17 test files creados** con 147 tests para todos los `.ts`/`.tsx` del proyecto: auth, i18n, animations, markdown, scroll, utils, theme-provider, middleware, contact-api, login-api, content.config, button, input, label, textarea, y barrel index
+- **Coverage thresholds**: Configurado `vitest.config.ts` con `perFile: true` al 80% en statements/branches/functions/lines
+- **Patrón co-located tests**: Cada test al lado del source (`src/lib/auth.test.ts` junto a `src/lib/auth.ts`)
+- **Per-file env**: Tests DOM usan `// @vitest-environment jsdom`, tests de lógica usan `node` (default)
+- **Exclusiones coverage**: JSON de i18n y barrel `index.ts` excluidos del reporte (falsos positivos de v8)
+- **Bug .gitignore**: `coverage/` no estaba ignorado y se estaba trackeando — añadido a `.gitignore` y eliminado con `git rm --cached`
+
+### Fase 10: Contacto real con Brevo
+- **API Contacto**: `src/pages/api/contact.ts` actualizado para enviar emails reales vía Brevo API (`fetch` nativo, sin dependencias)
+- **ToastProvider**: Conectado en `BaseLayout.astro` con `client:load` — antes existía pero no se renderizaba, los toasts nunca aparecían
+- **i18n**: Añadida clave `contact.connectionError` en ES/EN (se usaba en el catch pero no existía)
+- **Env vars**: `BREVO_API_KEY` añadida a `.env.example` y `.env` local
+- **Tests**: 8 tests para contact API cubriendo Brevo success, errores, API key faltante, y parse errors
 
 ### Fase 8: Animaciones y UI
 - **Animaciones títulos**: Todos los títulos migrados de `useTransform` a `whileInView` + `fadeUp` en About, Skills, Timeline, Projects, Blog, Services, Contact — evita desaparición al centrar sección con Lenis

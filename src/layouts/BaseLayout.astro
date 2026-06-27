@@ -3,6 +3,7 @@ import type { Locale } from '../lib/i18n';
 import { t } from '../lib/i18n';
 import SmoothScroll from '../components/SmoothScroll';
 import GradientMorph from '../components/GradientMorph';
+import { ToastProvider } from '../components/ui/toast-provider';
 import '../styles/globals.css';
 
 export interface Props {
@@ -102,10 +103,12 @@ const canonical = `${siteUrl}/${locale}/`;
       {locale === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
     </a>
 
-    <GradientMorph client:only="react" />
-    <main id="main-content">
-      <slot />
-    </main>
-    <SmoothScroll client:only="react" />
+    <ToastProvider client:load>
+      <GradientMorph client:only="react" />
+      <main id="main-content">
+        <slot />
+      </main>
+      <SmoothScroll client:only="react" />
+    </ToastProvider>
   </body>
 </html>
