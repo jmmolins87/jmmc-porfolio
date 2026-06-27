@@ -5,7 +5,6 @@ import type { Locale } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { fadeUp } from '@/lib/animations';
 import { stopLenis, startLenis } from '@/lib/scroll';
 import { cn } from '@/lib/utils';
@@ -88,14 +87,14 @@ export default function Blog({ locale, posts = [] }: Props) {
   if (posts.length === 0) return null;
 
   return (
-    <section id="blog" className="relative py-20">
+    <section id="blog" className="relative pb-24 md:pb-32">
       <div className="section-container">
         <motion.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="section-title"
+          className="section-title !mb-0"
         >
           {t(locale, 'blog.title')}
         </motion.h2>
@@ -204,7 +203,7 @@ export default function Blog({ locale, posts = [] }: Props) {
       </div>
 
       <Dialog open={!!selected} onOpenChange={(open) => { if (!open) closePost(); }}>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="sm:max-w-2xl overflow-y-auto max-h-[85vh]">
           {selected && (
             <>
               <DialogHeader>
@@ -227,12 +226,10 @@ export default function Blog({ locale, posts = [] }: Props) {
                   ))}
                 </div>
               </DialogHeader>
-              <ScrollArea className="max-h-[50vh] min-h-0">
-                <div
-                  className="text-muted-foreground leading-relaxed space-y-4 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-6 [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-4 [&_h3]:mb-2 [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_li]:text-muted-foreground [&_strong]:text-foreground [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_code]:font-mono"
-                  dangerouslySetInnerHTML={{ __html: selected.content || '' }}
-                />
-              </ScrollArea>
+              <div
+                className="text-muted-foreground leading-relaxed space-y-4 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:mt-6 [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-4 [&_h3]:mb-2 [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_li]:text-muted-foreground [&_strong]:text-foreground [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_code]:font-mono"
+                dangerouslySetInnerHTML={{ __html: selected.content || '' }}
+              />
             </>
           )}
         </DialogContent>

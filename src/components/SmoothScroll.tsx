@@ -9,6 +9,7 @@ export default function SmoothScroll() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       smoothWheel: true,
+      prevent: (node) => node.closest?.('[data-slot="dialog-content"]') !== null,
     });
 
     setLenis(lenis);

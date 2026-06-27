@@ -202,7 +202,7 @@ export default function Projects({ locale }: Props) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, margin: '-100px' }}
-          className="section-title"
+          className="section-title !mb-0"
         >
           {t(locale, 'projects.title')}
         </motion.h2>

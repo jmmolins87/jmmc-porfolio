@@ -1,5 +1,4 @@
 import { ChevronUp, Mail, X } from 'lucide-react';
-import { motion, useScroll, useSpring } from 'motion/react';
 import { GithubIcon, LinkedInIcon } from '@/lib/icons';
 import type { Locale } from '../../lib/i18n';
 import { t } from '../../lib/i18n';
@@ -18,9 +17,6 @@ const navLinks: { key: string; section: string }[] = [
 ];
 
 export default function Footer({ locale }: Props) {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-
   function scrollToSection(section: string) {
     const el = document.getElementById(section);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -28,11 +24,6 @@ export default function Footer({ locale }: Props) {
 
   return (
     <footer className="relative">
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] bg-primary origin-left z-[60]"
-        style={{ scaleX }}
-      />
-
       <div className="section-container">
         <div className="grid md:grid-cols-3 gap-10 mb-12">
           <div>

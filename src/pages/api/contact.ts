@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
         'api-key': apiKey,
       },
       body: JSON.stringify({
-        sender: { email: 'hola@jmmcdevsign.es', name: 'Juanma MC' },
+        sender: { email: 'jmmolins87@gmail.com', name: 'Juanma MC' },
         to: [{ email: 'hola@jmmcdevsign.es' }],
         replyTo: { email, name },
         subject: `Nuevo mensaje de ${name}`,
@@ -47,10 +47,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     if (!response.ok) {
-      const errorBody = await response.text();
-      console.error('[Contact] Brevo error:', response.status, errorBody);
       return new Response(
-        JSON.stringify({ error: `Brevo error: ${response.status} - ${errorBody}` }),
+        JSON.stringify({ error: 'Error al enviar el mensaje' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }

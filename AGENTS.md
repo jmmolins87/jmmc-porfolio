@@ -102,3 +102,9 @@ Consult these guides before working on related tasks:
 - **Nav mapeo explícito**: `navKeys` pasa de array de strings a `{ key, section }[]` para mapear `home` → `hero`
 - **Header logo**: Convertidos SVGs artísticos (viewBox 2437×1489) a PNGs a resolución retina para renderizado fiable en header
 - **404 page**: Simplificada a HTML standalone sin dependencias React para evitar error de hidratación en SSR
+
+### Fase 11: Blog Carousel y Modal
+- **Carousel blog**: Lista vertical reemplazada por horizontal snap-scroll con gradient overlay (última card se ve parcialmente). Prev/Next arrows, dots centrados full-width. Bug scroll vertical al navegar fijado (`container.scrollTo` en vez de `scrollIntoView`)
+- **Modal Dialog**: Al hacer click en card, abre shadcn Dialog con contenido renderizado via `renderMarkdown()`. Lenis stop/start al abrir/cerrar
+- **ScrollArea no funciona**: Radix ScrollArea necesita altura explícita (`h-[200px]`) en el Root para que `height: 100%` del Viewport resuelva. `max-h` no basta porque `height: auto` → `height: 100%` → `auto` → Viewport = contenido → Radix no detecta overflow. Solución actual: `overflow-y-auto max-h-[85vh]` en DialogContent (scrollea todo el diálogo, header incluido). Pendiente: lograr scroll solo del contenido con header fijo
+- **8 artículos**: 4 tópicos × ES/EN (Arquitectura Frontend, Automatización n8n+Claude, De Diseñador a Fullstack, Portfolio Astro 7)
