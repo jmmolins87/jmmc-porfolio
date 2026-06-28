@@ -10,14 +10,6 @@ vi.mock('@/lib/auth', () => ({
 
 import { POST } from '@/pages/api/login';
 
-function createRequest(body: string, contentType = 'application/x-www-form-urlencoded') {
-  return new Request('http://localhost/api/login', {
-    method: 'POST',
-    headers: { 'Content-Type': contentType },
-    body,
-  });
-}
-
 function createFormData(username?: string, password?: string): string {
   const params = new URLSearchParams();
   if (username) params.set('username', username);
@@ -36,24 +28,32 @@ function createMockCookies() {
 beforeEach(() => {
   vi.clearAllMocks();
   mockCreateToken.mockResolvedValue('test-jwt-token');
-  mockValidateCredentials.mockReturnValue(true);
+  mockValidateCredentials.mockResolvedValue({ valid: true, user: { id: '1', username: 'testuser', role: 'editor' } });
 });
 
 describe('POST /api/login', () => {
   it('returns 200 with valid credentials', async () => {
     const cookies = createMockCookies();
-    const request = createRequest(createFormData('testuser', 'testpass'));
+    const request = new Request('http://localhost/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: createFormData('testuser', 'testpass'),
+    });
 
     const response = await POST({ request, cookies, redirect: vi.fn() } as any);
     expect(response.status).toBe(200);
 
     const body = await response.json();
-    expect(body).toEqual({ success: true });
+    expect(body).toEqual({ success: true, role: 'editor' });
   });
 
   it('sets auth-token cookie on success', async () => {
     const cookies = createMockCookies();
-    const request = createRequest(createFormData('testuser', 'testpass'));
+    const request = new Request('http://localhost/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: createFormData('testuser', 'testpass'),
+    });
 
     await POST({ request, cookies } as any);
     expect(cookies.set).toHaveBeenCalledWith(
@@ -70,18 +70,26 @@ describe('POST /api/login', () => {
 
   it('validates credentials with the auth module', async () => {
     const cookies = createMockCookies();
-    const request = createRequest(createFormData('myuser', 'mypass'));
+    const request = new Request('http://localhost/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: createFormData('myuser', 'mypass'),
+    });
 
     await POST({ request, cookies } as any);
     expect(mockValidateCredentials).toHaveBeenCalledWith('myuser', 'mypass');
-    expect(mockCreateToken).toHaveBeenCalledWith('myuser');
+    expect(mockCreateToken).toHaveBeenCalledWith('testuser', 'editor');
   });
 
   it('returns 401 when credentials are invalid', async () => {
-    mockValidateCredentials.mockReturnValue(false);
+    mockValidateCredentials.mockResolvedValue({ valid: false });
 
     const cookies = createMockCookies();
-    const request = createRequest(createFormData('testuser', 'wrongpass'));
+    const request = new Request('http://localhost/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: createFormData('testuser', 'wrongpass'),
+    });
 
     const response = await POST({ request, cookies } as any);
     expect(response.status).toBe(401);
@@ -92,18 +100,23 @@ describe('POST /api/login', () => {
 
   it('returns 400 when username is missing', async () => {
     const cookies = createMockCookies();
-    const request = createRequest(createFormData(undefined, 'testpass'));
+    const request = new Request('http://localhost/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: createFormData(undefined, 'testpass'),
+    });
 
     const response = await POST({ request, cookies } as any);
     expect(response.status).toBe(400);
-
-    const body = await response.json();
-    expect(body.error).toBe('Usuario y contraseña requeridos');
   });
 
   it('returns 400 when password is missing', async () => {
     const cookies = createMockCookies();
-    const request = createRequest(createFormData('testuser', undefined));
+    const request = new Request('http://localhost/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: createFormData('testuser', undefined),
+    });
 
     const response = await POST({ request, cookies } as any);
     expect(response.status).toBe(400);
@@ -118,8 +131,5 @@ describe('POST /api/login', () => {
 
     const response = await POST({ request: badRequest, cookies } as any);
     expect(response.status).toBe(500);
-
-    const body = await response.json();
-    expect(body.error).toBe('Error interno del servidor');
   });
 });

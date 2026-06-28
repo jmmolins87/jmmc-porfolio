@@ -14,14 +14,15 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       );
     }
 
-    if (!validateCredentials(username, password)) {
+    const result = await validateCredentials(username, password);
+    if (!result.valid || !result.user) {
       return new Response(
         JSON.stringify({ error: 'Credenciales inválidas' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const token = await createToken(username);
+    const token = await createToken(result.user.username, result.user.role);
 
     cookies.set('auth-token', token, {
       path: '/',
@@ -32,7 +33,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
 
     return new Response(
-      JSON.stringify({ success: true }),
+      JSON.stringify({ success: true, role: result.user.role }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch {
