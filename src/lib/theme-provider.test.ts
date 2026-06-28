@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useTheme } from './theme-provider';
+import { useTheme } from '@/lib/theme-provider';
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {};

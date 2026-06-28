@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { Save, EyeOff } from 'lucide-react';
 import { Input, Textarea, Label, Button, Badge } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import ImageUpload from './ImageUpload';
+import ImageUpload from '@/components/dashboard/ImageUpload';
 
 const MDEditor = lazy(() => import('@uiw/react-md-editor'));
 

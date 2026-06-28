@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import type { Locale } from '../lib/i18n';
-import { cn } from '../lib/utils';
+import type { Locale } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 
 interface Props {
   locale: Locale;

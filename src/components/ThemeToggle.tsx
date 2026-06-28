@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Monitor } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 
 type Theme = 'light' | 'dark' | 'system';
 const themes: { value: Theme; icon: typeof Sun; label: string }[] = [

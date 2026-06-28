@@ -1,8 +1,8 @@
 ---
 import '../styles/globals.css';
-import { detectLocale, t } from '../lib/i18n';
-import { ToastProvider } from '../components/ui/toast-provider';
-import LoginForm from '../components/LoginForm';
+import { detectLocale, t } from '@/lib/i18n';
+import { ToastProvider } from '@/components/ui/toast-provider';
+import LoginForm from '@/components/LoginForm';
 
 const acceptLang = Astro.request.headers.get('accept-language') || '';
 const locale = detectLocale(acceptLang);

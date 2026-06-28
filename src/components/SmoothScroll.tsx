@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
-import { setLenis } from '../lib/scroll';
+import { setLenis } from '@/lib/scroll';
 
 export default function SmoothScroll() {
   useEffect(() => {

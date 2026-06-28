@@ -1,9 +1,9 @@
-import type { Locale } from '../lib/i18n';
-import { t } from '../lib/i18n';
-import Header from './ui/header';
-import ThemeToggle from './ThemeToggle';
-import LanguageSwitcher from './LanguageSwitcher';
-import { scrollTo } from '../lib/scroll';
+import type { Locale } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
+import Header from '@/components/ui/header';
+import ThemeToggle from '@/components/ThemeToggle';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { scrollTo } from '@/lib/scroll';
 
 interface Props {
   locale: Locale;

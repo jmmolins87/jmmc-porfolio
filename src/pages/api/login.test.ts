@@ -3,12 +3,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const mockCreateToken = vi.hoisted(() => vi.fn());
 const mockValidateCredentials = vi.hoisted(() => vi.fn());
 
-vi.mock('../../lib/auth', () => ({
+vi.mock('@/lib/auth', () => ({
   createToken: mockCreateToken,
   validateCredentials: mockValidateCredentials,
 }));
 
-import { POST } from './login';
+import { POST } from '@/pages/api/login';
 
 function createRequest(body: string, contentType = 'application/x-www-form-urlencoded') {
   return new Request('http://localhost/api/login', {

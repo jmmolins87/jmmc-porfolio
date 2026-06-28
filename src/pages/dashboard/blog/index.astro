@@ -1,7 +1,7 @@
 ---
-import DashboardLayout from '../../../layouts/DashboardLayout.astro';
-import { db } from '../../../db';
-import { posts } from '../../../db/schema';
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { db } from '@/db';
+import { posts } from '@/db/schema';
 import { desc } from 'drizzle-orm';
 
 const lang = (Astro.url.searchParams.get('lang') as 'es' | 'en') ?? 'es';
@@ -54,7 +54,7 @@ const allPosts = await db
   <script>
     import React from 'react';
     import { createRoot } from 'react-dom/client';
-    import PostList from '../../../components/dashboard/PostList';
+    import PostList from '@/components/dashboard/PostList';
 
     const container = document.getElementById('post-list');
     const posts = JSON.parse(container?.dataset.posts ?? '[]');

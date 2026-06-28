@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import type { Locale } from '../../lib/i18n';
-import { t } from '../../lib/i18n';
-import { fadeLeft, fadeRight, fadeUp, rippleNode } from '../../lib/animations';
-import { cn } from '../../lib/utils';
+import type { Locale } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
+import { fadeLeft, fadeRight, fadeUp, rippleNode } from '@/lib/animations';
+import { cn } from '@/lib/utils';
 
 interface Props {
   locale: Locale;

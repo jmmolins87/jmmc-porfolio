@@ -1,5 +1,5 @@
-import es from '../content/i18n/es.json';
-import en from '../content/i18n/en.json';
+import es from '@/content/i18n/es.json';
+import en from '@/content/i18n/en.json';
 
 export type Locale = 'es' | 'en';
 

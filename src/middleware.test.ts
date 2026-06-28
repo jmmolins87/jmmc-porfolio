@@ -6,11 +6,11 @@ vi.mock('astro/middleware', () => ({
 
 const mockVerifyToken = vi.hoisted(() => vi.fn());
 
-vi.mock('./lib/auth', () => ({
+vi.mock('@/lib/auth', () => ({
   verifyToken: mockVerifyToken,
 }));
 
-import { onRequest } from './middleware';
+import { onRequest } from '@/middleware';
 
 function createContext(pathname: string, token?: string) {
   const cookieMock = {

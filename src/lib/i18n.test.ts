@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { t, detectLocale, getLocaleFromPath, locales, localeLabels } from './i18n';
+import { t, detectLocale, getLocaleFromPath, locales, localeLabels } from '@/lib/i18n';
 
 describe('t', () => {
   it('returns correct ES translation for a known key', () => {

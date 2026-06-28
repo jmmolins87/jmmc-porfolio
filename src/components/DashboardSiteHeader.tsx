@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import type { Locale } from '../lib/i18n';
-import Header from './ui/header';
-import LanguageSwitcher from './LanguageSwitcher';
+import type { Locale } from '@/lib/i18n';
+import Header from '@/components/ui/header';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { LayoutDashboard, FileText, Plus, LogOut } from 'lucide-react';
 
 interface Props {

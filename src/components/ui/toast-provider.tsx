@@ -5,7 +5,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <>
       {children}
       <Toaster 
-        position="top-center"
+        position="bottom-right"
         toastOptions={{ 
           className: 'bg-background border border-border text-foreground',
           style: {

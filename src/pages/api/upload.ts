@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { put } from '@vercel/blob';
-import { verifyToken } from '../../lib/auth';
+import { verifyToken } from '@/lib/auth';
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {

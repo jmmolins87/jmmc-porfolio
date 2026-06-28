@@ -1,5 +1,5 @@
 ---
-import { detectLocale } from '../lib/i18n';
+import { detectLocale } from '@/lib/i18n';
 
 const acceptLang = Astro.request.headers.get('accept-language') || '';
 const locale = detectLocale(acceptLang);

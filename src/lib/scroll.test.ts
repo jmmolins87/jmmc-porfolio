@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { setLenis, stopLenis, startLenis, scrollTo } from './scroll';
+import { setLenis, stopLenis, startLenis, scrollTo } from '@/lib/scroll';
 
 beforeEach(() => {
   document.body.innerHTML =

@@ -1,10 +1,10 @@
 import { useState, type ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { Menu, X } from 'lucide-react';
-import { Button } from './button';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from './sheet';
-import { cn } from '../../lib/utils';
-import type { Locale } from '../../lib/i18n';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
+import type { Locale } from '@/lib/i18n';
 
 export interface NavItem {
   key: string;

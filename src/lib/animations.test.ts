@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import * as animations from './animations';
+import * as animations from '@/lib/animations';
 
 const variantNames = [
   'fadeUp',

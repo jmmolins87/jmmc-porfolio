@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
-import { db } from '../../db';
-import { posts } from '../../db/schema';
+import { db } from '@/db';
+import { posts } from '@/db/schema';
 import { eq, desc, and, sql } from 'drizzle-orm';
-import { verifyToken } from '../../lib/auth';
+import { verifyToken } from '@/lib/auth';
 
 export const GET: APIRoute = async ({ url }) => {
   try {

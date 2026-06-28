@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { renderMarkdown } from './markdown';
+import { renderMarkdown } from '@/lib/markdown';
 
 describe('renderMarkdown', () => {
   it('wraps output in prose div', () => {
     const result = renderMarkdown('Hello');
-    expect(result).toMatch(/^<div class="prose prose-sm max-w-none">.*<\/div>$/);
+    expect(result).toMatch(/^<div class="prose prose-sm max-w-none">.*<\/div>$/s);
   });
 
   it('renders h1 headings', () => {

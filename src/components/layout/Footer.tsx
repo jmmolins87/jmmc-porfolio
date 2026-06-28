@@ -1,8 +1,8 @@
 import { ChevronUp, Mail } from 'lucide-react';
 import { GithubIcon, LinkedInIcon } from '@/lib/icons';
-import type { Locale } from '../../lib/i18n';
-import { t } from '../../lib/i18n';
-import { cn } from '../../lib/utils';
+import type { Locale } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 
 interface Props {
   locale: Locale;

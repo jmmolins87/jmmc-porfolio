@@ -1,9 +1,9 @@
 ---
 export const prerender = true;
 
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { db } from '../../../db';
-import { posts } from '../../../db/schema';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { db } from '@/db';
+import { posts } from '@/db/schema';
 import { desc } from 'drizzle-orm';
 import { marked } from 'marked';
 

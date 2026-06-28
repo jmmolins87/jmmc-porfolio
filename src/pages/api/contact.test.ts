@@ -1,5 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { POST } from './contact';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
+const mockValues = vi.hoisted(() => vi.fn().mockResolvedValue([]));
+
+vi.mock('@/db', () => ({
+  db: { insert: vi.fn().mockReturnValue({ values: mockValues }) },
+}));
+
+import { POST } from '@/pages/api/contact';
 
 const mockFetch = vi.fn();
 
@@ -12,6 +19,7 @@ function createRequest(body: any, validJson = true) {
 }
 
 beforeEach(() => {
+  vi.clearAllMocks();
   vi.stubEnv('BREVO_API_KEY', 'test-key');
   mockFetch.mockReset();
   vi.stubGlobal('fetch', mockFetch);

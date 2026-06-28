@@ -7,10 +7,10 @@ import {
   Brain,
   type LucideIcon,
 } from 'lucide-react';
-import type { Locale } from '../../lib/i18n';
-import { t } from '../../lib/i18n';
-import { fadeUp, staggerContainer, radialExplode, floatSlow, clipRevealUp } from '../../lib/animations';
-import { cn } from '../../lib/utils';
+import type { Locale } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
+import { fadeUp, staggerContainer, radialExplode, floatSlow, clipRevealUp } from '@/lib/animations';
+import { cn } from '@/lib/utils';
 
 interface Skill {
   name: string;

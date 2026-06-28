@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { MapPin } from 'lucide-react';
-import type { Locale } from '../../lib/i18n';
-import { t } from '../../lib/i18n';
-import { fadeUp, fadeLeft, fadeRight, staggerContainer, portalReveal, wordFly, wordFlyLeft, wordFlyRight } from '../../lib/animations';
-import { cn } from '../../lib/utils';
+import type { Locale } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
+import { fadeUp, fadeLeft, fadeRight, staggerContainer, portalReveal, wordFly, wordFlyLeft, wordFlyRight } from '@/lib/animations';
+import { cn } from '@/lib/utils';
 
 interface Props {
   locale: Locale;

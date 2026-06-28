@@ -8,7 +8,7 @@ import { describe, it, expect } from 'vitest';
 
 describe('useTheme SSR', () => {
   it('exports useTheme as a function', async () => {
-    const mod = await import('./theme-provider');
+    const mod = await import('@/lib/theme-provider');
     expect(typeof mod.useTheme).toBe('function');
   });
 });
