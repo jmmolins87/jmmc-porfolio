@@ -22,6 +22,7 @@ interface Post {
   readTime: string;
   tags: string[];
   content?: string;
+  coverImage?: string;
 }
 
 export default function Blog({ locale, posts = [] }: Props) {
@@ -127,7 +128,7 @@ export default function Blog({ locale, posts = [] }: Props) {
 
           <div
             ref={containerRef}
-            className="flex-1 max-w-[800px] mx-auto flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-1 py-2 [&::-webkit-scrollbar]:hidden"
+            className="flex-1 max-w-[1200px] mx-auto flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-[25%] py-2 [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {posts.map((post, i) => (
@@ -135,12 +136,20 @@ export default function Blog({ locale, posts = [] }: Props) {
                 key={post.id}
                 ref={(el) => { cardsRef.current[i] = el; }}
                 data-index={i}
-                className="snap-start shrink-0 w-[75%]"
+                className="snap-start shrink-0 w-full"
               >
                 <article
                   onClick={() => openPost(post)}
                   className="group rounded-2xl border border-border bg-card p-6 hover:glow-sm hover:border-primary/30 transition-all duration-300 cursor-pointer h-full flex flex-col"
                 >
+                  {post.coverImage && (
+                    <img
+                      src={post.coverImage}
+                      alt={post.title}
+                      className="w-full h-48 object-cover rounded-xl mb-4"
+                      loading="lazy"
+                    />
+                  )}
                   <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                     <span className="flex items-center gap-1.5">
                       <Calendar className="h-4 w-4" />
@@ -215,6 +224,13 @@ export default function Blog({ locale, posts = [] }: Props) {
           {selected && (
             <>
               <DialogHeader>
+                {selected.coverImage && (
+                  <img
+                    src={selected.coverImage}
+                    alt={selected.title}
+                    className="w-full h-56 object-cover rounded-xl mb-4"
+                  />
+                )}
                 <DialogTitle className="text-2xl">{selected.title}</DialogTitle>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1.5">

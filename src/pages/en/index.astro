@@ -41,6 +41,7 @@ const blogPosts = allPosts
     readTime: post.readTimeEn ?? '5 min',
     tags: post.tags,
     content: renderMarkdown(post.contentEn),
+    coverImage: post.coverImage ?? undefined,
   }));
 ---
 

@@ -10,6 +10,14 @@ import { join } from 'path';
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql, { schema });
 
+const coverImageMap: Record<string, string> = {
+  'frontend-architecture': '/blog/frontend-architecture.jpg',
+  'n8n-claude-automation': '/blog/n8n-claude-automation.jpg',
+  'portfolio-astro-7': '/blog/portfolio-astro-7.jpg',
+  'ai-transforming-dev': '/blog/ai-transforming-dev.jpg',
+  'designer-to-fullstack': '/blog/designer-to-fullstack.jpg',
+};
+
 function parseFrontmatter(content: string) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return null;
@@ -101,6 +109,8 @@ async function seed() {
     const readTimeEn = fm.readTime_en ? String(fm.readTime_en) : calcReadTime(contentEn);
     const date = fm.date ? new Date(String(fm.date)) : new Date();
 
+    const coverImage = coverImageMap[slug] ?? null;
+
     await db.insert(posts).values({
       slug,
       titleEs,
@@ -109,6 +119,7 @@ async function seed() {
       descriptionEn,
       contentEs,
       contentEn,
+      coverImage,
       tags: typeof tags === 'string'
         ? tags.replace(/[\[\]"']/g, '').split(',').map((s) => s.trim()).filter(Boolean)
         : tags,
@@ -117,6 +128,9 @@ async function seed() {
       isPublished: true,
       publishedAt: date,
       updatedAt: new Date(),
+    }).onConflictDoUpdate({
+      target: posts.slug,
+      set: { coverImage, updatedAt: new Date() },
     });
 
     console.log(`  ✓ ${slug}`);
