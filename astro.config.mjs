@@ -27,8 +27,10 @@ export default defineConfig({
         '@': path.resolve('./src'),
       },
     },
-    ssr: {
-      external: ['bcryptjs'],
+    build: {
+      rolldownOptions: {
+        external: ['bcryptjs'],
+      },
     },
   },
 });
