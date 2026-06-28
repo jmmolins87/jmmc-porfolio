@@ -4,6 +4,7 @@ import Header from '@/components/ui/header';
 import ThemeToggle from '@/components/ThemeToggle';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { scrollTo } from '@/lib/scroll';
+import { useActiveSection } from '@/hooks/useActiveSection';
 
 interface Props {
   locale: Locale;
@@ -12,9 +13,12 @@ interface Props {
 const navKeys = ['about', 'skills', 'experience', 'projects', 'services', 'blog', 'contact'] as const;
 
 export default function SiteHeader({ locale }: Props) {
+  const activeSection = useActiveSection();
+
   return (
     <Header
       locale={locale}
+      activeSection={activeSection}
       navItems={navKeys.map((key) => ({
         key,
         label: t(locale, `nav.${key}`),

@@ -5,6 +5,7 @@ interface LenisInstance {
 }
 
 let lenisInstance: LenisInstance | null = null;
+let _programmaticScroll = false;
 
 export function setLenis(lenis: LenisInstance | null) {
   lenisInstance = lenis;
@@ -18,9 +19,15 @@ export function startLenis() {
   lenisInstance?.start();
 }
 
+export function isProgrammaticScroll() {
+  return _programmaticScroll;
+}
+
 export function scrollTo(target: string, options?: { offset?: number }) {
   const el = document.getElementById(target);
   if (!el) return;
+
+  _programmaticScroll = true;
 
   if (lenisInstance) {
     const viewportHeight = window.innerHeight;
@@ -35,4 +42,6 @@ export function scrollTo(target: string, options?: { offset?: number }) {
   } else {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+
+  setTimeout(() => { _programmaticScroll = false; }, 1500);
 }

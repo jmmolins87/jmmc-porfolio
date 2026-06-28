@@ -6,7 +6,7 @@ import type { Locale } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { scrollTo, stopLenis, startLenis } from '@/lib/scroll';
+import { scrollTo, stopLenis, startLenis, isProgrammaticScroll } from '@/lib/scroll';
 
 interface Props {
   locale: Locale;
@@ -113,7 +113,7 @@ export default function Hero({ locale }: Props) {
   useEffect(() => {
     let triggered = false;
     const onScroll = async () => {
-      if (triggered || videoStarted) return;
+      if (triggered || videoStarted || isProgrammaticScroll()) return;
       triggered = true;
       const video = videoRef.current;
       if (!video) return;

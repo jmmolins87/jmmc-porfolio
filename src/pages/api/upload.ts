@@ -50,7 +50,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const filename = `blog/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
     const blob = await put(filename, file, {
-      access: 'public',
+      access: 'private',
     });
 
     return new Response(

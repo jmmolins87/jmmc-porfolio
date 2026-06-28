@@ -144,7 +144,7 @@ export default function Blog({ locale, posts = [] }: Props) {
                 >
                   {post.coverImage && (
                     <img
-                      src={post.coverImage}
+                      src={`/api/blog-image?url=${encodeURIComponent(post.coverImage)}`}
                       alt={post.title}
                       className="w-full h-48 object-cover rounded-xl mb-4"
                       loading="lazy"
@@ -226,7 +226,7 @@ export default function Blog({ locale, posts = [] }: Props) {
               <DialogHeader>
                 {selected.coverImage && (
                   <img
-                    src={selected.coverImage}
+                    src={`/api/blog-image?url=${encodeURIComponent(selected.coverImage)}`}
                     alt={selected.title}
                     className="w-full h-56 object-cover rounded-xl mb-4"
                   />

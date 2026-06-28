@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import type { Locale } from '@/lib/i18n';
+import type { ActiveSection } from '@/hooks/useActiveSection';
 
 export interface NavItem {
   key: string;
@@ -18,12 +19,13 @@ export interface NavItem {
 interface HeaderProps {
   locale: Locale;
   navItems: NavItem[];
+  activeSection?: ActiveSection;
   actions?: ReactNode;
   logoHref?: string;
   className?: string;
 }
 
-export default function Header({ locale, navItems, actions, logoHref = '/', className }: HeaderProps) {
+export default function Header({ locale, navItems, activeSection, actions, logoHref = '/', className }: HeaderProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -64,6 +66,7 @@ export default function Header({ locale, navItems, actions, logoHref = '/', clas
                 href={item.href}
                 className={cn(
                   'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:bg-muted',
+                  activeSection === item.key && 'bg-muted text-primary',
                   item.className
                 )}
               >
@@ -76,6 +79,7 @@ export default function Header({ locale, navItems, actions, logoHref = '/', clas
                 onClick={item.onClick}
                 className={cn(
                   'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:bg-muted cursor-pointer',
+                  activeSection === item.key && 'bg-muted text-primary',
                   item.className
                 )}
               >
@@ -115,6 +119,7 @@ export default function Header({ locale, navItems, actions, logoHref = '/', clas
                         onClick={() => setOpen(false)}
                         className={cn(
                           'flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl text-sm font-medium hover:bg-muted transition-colors',
+                          activeSection === item.key && 'bg-muted text-primary',
                           item.className
                         )}
                       >
@@ -127,6 +132,7 @@ export default function Header({ locale, navItems, actions, logoHref = '/', clas
                         onClick={() => { item.onClick?.(); setOpen(false); }}
                         className={cn(
                           'flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl text-sm font-medium hover:bg-muted transition-colors cursor-pointer',
+                          activeSection === item.key && 'bg-muted text-primary',
                           item.className
                         )}
                       >
