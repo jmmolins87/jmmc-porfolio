@@ -27,5 +27,8 @@ export default defineConfig({
         '@': path.resolve('./src'),
       },
     },
+    ssr: {
+      external: ['bcryptjs'],
+    },
   },
 });
