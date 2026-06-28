@@ -1,7 +1,7 @@
 import { defineMiddleware } from 'astro/middleware';
 import { verifyToken } from './lib/auth';
 
-const protectedPagePaths = ['/blog', '/es/blog', '/en/blog', '/dashboard'];
+const protectedPagePaths = ['/dashboard'];
 const protectedApiPaths = ['/api/posts', '/api/upload'];
 
 function isProtectedPage(pathname: string): boolean {

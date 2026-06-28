@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import { toast } from 'sonner';
-import { Save, Eye, EyeOff } from 'lucide-react';
+import { Save, EyeOff } from 'lucide-react';
 import { Input, Textarea, Label, Button, Badge } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import ImageUpload from './ImageUpload';
@@ -9,12 +9,14 @@ const MDEditor = lazy(() => import('@uiw/react-md-editor'));
 
 interface PostData {
   id?: string;
-  title: string;
-  description: string;
-  content: string;
+  titleEs: string;
+  titleEn: string;
+  descriptionEs: string;
+  descriptionEn: string;
+  contentEs: string;
+  contentEn: string;
   coverImage: string;
   tags: string[];
-  lang: 'es' | 'en';
   isPublished: boolean;
   publishedAt: string;
 }
@@ -42,13 +44,16 @@ function slugify(title: string): string {
 export default function PostForm({ initialData, mode }: Props) {
   const [saving, setSaving] = useState(false);
   const [tagInput, setTagInput] = useState('');
+  const [activeTab, setActiveTab] = useState<'es' | 'en'>('es');
 
-  const [title, setTitle] = useState(initialData?.title ?? '');
-  const [description, setDescription] = useState(initialData?.description ?? '');
-  const [content, setContent] = useState(initialData?.content ?? '');
+  const [titleEs, setTitleEs] = useState(initialData?.titleEs ?? '');
+  const [titleEn, setTitleEn] = useState(initialData?.titleEn ?? '');
+  const [descriptionEs, setDescriptionEs] = useState(initialData?.descriptionEs ?? '');
+  const [descriptionEn, setDescriptionEn] = useState(initialData?.descriptionEn ?? '');
+  const [contentEs, setContentEs] = useState(initialData?.contentEs ?? '');
+  const [contentEn, setContentEn] = useState(initialData?.contentEn ?? '');
   const [coverImage, setCoverImage] = useState(initialData?.coverImage ?? '');
   const [tags, setTags] = useState<string[]>(initialData?.tags ?? []);
-  const [lang, setLang] = useState<'es' | 'en'>(initialData?.lang ?? 'es');
   const [isPublished, setIsPublished] = useState(initialData?.isPublished ?? true);
   const [publishedAt, setPublishedAt] = useState(
     initialData?.publishedAt
@@ -56,8 +61,9 @@ export default function PostForm({ initialData, mode }: Props) {
       : new Date().toISOString().slice(0, 10)
   );
 
-  const slug = slugify(title);
-  const readTime = calcReadTime(content);
+  const slug = slugify(titleEs || titleEn);
+  const readTimeEs = calcReadTime(contentEs);
+  const readTimeEn = calcReadTime(contentEn);
 
   function addTag() {
     const trimmed = tagInput.trim();
@@ -72,20 +78,28 @@ export default function PostForm({ initialData, mode }: Props) {
   }
 
   async function handleSubmit(publish: boolean) {
-    if (!title.trim() || !content.trim()) {
-      toast.error('Título y contenido son obligatorios');
+    if (!titleEs.trim() && !titleEn.trim()) {
+      toast.error('Al menos un título es obligatorio');
+      return;
+    }
+    if (!contentEs.trim() && !contentEn.trim()) {
+      toast.error('Al menos un contenido es obligatorio');
       return;
     }
 
     setSaving(true);
     try {
       const payload = {
-        title: title.trim(),
-        description: description.trim() || null,
-        content,
+        titleEs: titleEs.trim() || titleEn.trim(),
+        titleEn: titleEn.trim() || titleEs.trim(),
+        descriptionEs: descriptionEs.trim() || null,
+        descriptionEn: descriptionEn.trim() || null,
+        contentEs: contentEs || contentEn,
+        contentEn: contentEn || contentEs,
         coverImage: coverImage || null,
         tags,
-        lang,
+        readTimeEs,
+        readTimeEn,
         isPublished: publish,
         publishedAt: new Date(publishedAt).toISOString(),
       };
@@ -120,59 +134,31 @@ export default function PostForm({ initialData, mode }: Props) {
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="title">Título *</Label>
+          <Label htmlFor="titleEs">Título ES *</Label>
           <Input
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Mi artículo"
+            id="titleEs"
+            value={titleEs}
+            onChange={(e) => setTitleEs(e.target.value)}
+            placeholder="Título en español"
           />
         </div>
         <div className="space-y-2">
-          <Label>Slug (auto)</Label>
-          <Input value={slug} disabled className="font-mono text-sm" />
+          <Label htmlFor="titleEn">Título EN *</Label>
+          <Input
+            id="titleEn"
+            value={titleEn}
+            onChange={(e) => setTitleEn(e.target.value)}
+            placeholder="English title"
+          />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Descripción</Label>
-        <Textarea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Breve descripción del artículo"
-          rows={2}
-        />
+        <Label>Slug (auto)</Label>
+        <Input value={slug} disabled className="font-mono text-sm" />
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label>Idioma</Label>
-          <div className="flex gap-3">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="lang"
-                value="es"
-                checked={lang === 'es'}
-                onChange={() => setLang('es')}
-                className="accent-primary"
-              />
-              <span className="text-sm">ES</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="lang"
-                value="en"
-                checked={lang === 'en'}
-                onChange={() => setLang('en')}
-                className="accent-primary"
-              />
-              <span className="text-sm">EN</span>
-            </label>
-          </div>
-        </div>
         <div className="space-y-2">
           <Label htmlFor="date">Fecha publicación</Label>
           <Input
@@ -183,8 +169,12 @@ export default function PostForm({ initialData, mode }: Props) {
           />
         </div>
         <div className="space-y-2">
-          <Label>Tiempo lectura</Label>
-          <Input value={readTime} disabled className="text-sm" />
+          <Label>Tiempo lectura ES</Label>
+          <Input value={readTimeEs} disabled className="text-sm" />
+        </div>
+        <div className="space-y-2">
+          <Label>Tiempo lectura EN</Label>
+          <Input value={readTimeEn} disabled className="text-sm" />
         </div>
       </div>
 
@@ -217,16 +207,79 @@ export default function PostForm({ initialData, mode }: Props) {
         <ImageUpload value={coverImage} onChange={setCoverImage} />
       </div>
 
-      <div className="space-y-2" data-color-mode="dark">
-        <Label>Contenido (Markdown) *</Label>
-        <Suspense fallback={<div className="h-[400px] flex items-center justify-center border border-border rounded-xl bg-muted">Cargando editor...</div>}>
-          <MDEditor
-            value={content}
-            onChange={(val) => setContent(val ?? '')}
-            height={400}
-            preview="live"
+      <div className="space-y-2">
+        <div className="flex gap-2 border-b border-border">
+          <button
+            type="button"
+            onClick={() => setActiveTab('es')}
+            className={cn(
+              'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
+              activeTab === 'es'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            )}
+          >
+            Español
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('en')}
+            className={cn(
+              'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
+              activeTab === 'en'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            )}
+          >
+            English
+          </button>
+        </div>
+
+        <div className={cn(activeTab !== 'es' && 'hidden')}>
+          <Label htmlFor="descEs">Descripción ES</Label>
+          <Textarea
+            id="descEs"
+            value={descriptionEs}
+            onChange={(e) => setDescriptionEs(e.target.value)}
+            placeholder="Breve descripción en español"
+            rows={2}
+            className="mb-4"
           />
-        </Suspense>
+          <Label>Contenido ES *</Label>
+          <div data-color-mode="dark">
+            <Suspense fallback={<div className="h-[400px] flex items-center justify-center border border-border rounded-xl bg-muted">Cargando editor...</div>}>
+              <MDEditor
+                value={contentEs}
+                onChange={(val) => setContentEs(val ?? '')}
+                height={400}
+                preview="live"
+              />
+            </Suspense>
+          </div>
+        </div>
+
+        <div className={cn(activeTab !== 'en' && 'hidden')}>
+          <Label htmlFor="descEn">Descripción EN</Label>
+          <Textarea
+            id="descEn"
+            value={descriptionEn}
+            onChange={(e) => setDescriptionEn(e.target.value)}
+            placeholder="Brief description in English"
+            rows={2}
+            className="mb-4"
+          />
+          <Label>Contenido EN *</Label>
+          <div data-color-mode="dark">
+            <Suspense fallback={<div className="h-[400px] flex items-center justify-center border border-border rounded-xl bg-muted">Loading editor...</div>}>
+              <MDEditor
+                value={contentEn}
+                onChange={(val) => setContentEn(val ?? '')}
+                height={400}
+                preview="live"
+              />
+            </Suspense>
+          </div>
+        </div>
       </div>
 
       <div className="flex gap-3 pt-4 border-t border-border">
@@ -238,7 +291,7 @@ export default function PostForm({ initialData, mode }: Props) {
           disabled={saving}
         >
           <EyeOff className="h-4 w-4 mr-2" />
-          Guardar borrador
+          {mode === 'create' ? 'Guardar borrador' : 'Save draft'}
         </Button>
         <Button
           type="button"
@@ -248,7 +301,7 @@ export default function PostForm({ initialData, mode }: Props) {
           className="shimmer"
         >
           <Save className="h-4 w-4 mr-2" />
-          {saving ? 'Guardando...' : 'Publicar'}
+          {saving ? 'Guardando...' : mode === 'create' ? 'Publicar' : 'Publish'}
         </Button>
       </div>
     </div>

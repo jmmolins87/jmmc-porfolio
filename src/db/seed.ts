@@ -12,7 +12,7 @@ function parseFrontmatter(content: string) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return null;
 
-  const frontmatter: Record<string, string> = {};
+  const frontmatter: Record<string, string | string[]> = {};
   const lines = match[1].split('\n');
   let currentKey = '';
   let currentValue = '';
@@ -53,15 +53,6 @@ function parseFrontmatter(content: string) {
   return frontmatter;
 }
 
-function slugify(title: string): string {
-  return title
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
 function calcReadTime(content: string): string {
   const words = content.split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.ceil(words / 200));
@@ -83,16 +74,16 @@ async function seed() {
     }
 
     const slug = file.replace('.md', '');
-    const titleEs = fm.title_es ?? fm.title_en ?? slug;
-    const titleEn = fm.title_en ?? fm.title_es ?? slug;
-    const descriptionEs = fm.description_es ?? fm.description_en ?? null;
-    const descriptionEn = fm.description_en ?? fm.description_es ?? null;
-    const contentEs = fm.content_es ?? '';
-    const contentEn = fm.content_en ?? '';
+    const titleEs = String(fm.title_es ?? fm.title_en ?? slug);
+    const titleEn = String(fm.title_en ?? fm.title_es ?? slug);
+    const descriptionEs = fm.description_es ? String(fm.description_es) : null;
+    const descriptionEn = fm.description_en ? String(fm.description_en) : null;
+    const contentEs = String(fm.content_es ?? '');
+    const contentEn = String(fm.content_en ?? '');
     const tags = fm.tags ?? '[]';
-    const readTimeEs = fm.readTime_es ?? calcReadTime(contentEs);
-    const readTimeEn = fm.readTime_en ?? calcReadTime(contentEn);
-    const date = fm.date ? new Date(fm.date) : new Date();
+    const readTimeEs = fm.readTime_es ? String(fm.readTime_es) : calcReadTime(contentEs);
+    const readTimeEn = fm.readTime_en ? String(fm.readTime_en) : calcReadTime(contentEn);
+    const date = fm.date ? new Date(String(fm.date)) : new Date();
 
     await db.insert(posts).values({
       slug,

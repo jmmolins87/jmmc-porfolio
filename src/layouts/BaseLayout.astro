@@ -5,6 +5,7 @@ import SmoothScroll from '../components/SmoothScroll';
 import GradientMorph from '../components/GradientMorph';
 import BackgroundParallax from '../components/BackgroundParallax';
 import Loader from '../components/Loader';
+import SiteHeader from '../components/SiteHeader';
 import { ToastProvider } from '../components/ui/toast-provider';
 import '../styles/globals.css';
 
@@ -106,6 +107,7 @@ const canonical = `${siteUrl}/${locale}/`;
     </a>
 
     <Loader client:only="react" />
+    <SiteHeader client:load locale={locale} />
     <ToastProvider client:load>
       <GradientMorph client:only="react" />
       <BackgroundParallax client:only="react" />

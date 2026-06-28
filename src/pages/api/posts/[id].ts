@@ -3,7 +3,38 @@ import { db } from '../../../db';
 import { posts } from '../../../db/schema';
 import { eq } from 'drizzle-orm';
 import { verifyToken } from '../../../lib/auth';
-import { calcReadTime } from '../../../lib/markdown';
+
+export const GET: APIRoute = async ({ params }) => {
+  try {
+    const id = params.id;
+    if (!id) {
+      return new Response(
+        JSON.stringify({ error: 'ID requerido' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const [post] = await db.select().from(posts).where(eq(posts.id, id));
+
+    if (!post) {
+      return new Response(
+        JSON.stringify({ error: 'Post no encontrado' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ post }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    console.error('[Post GET] Error:', error);
+    return new Response(
+      JSON.stringify({ error: 'Error interno del servidor' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+};
 
 export const PATCH: APIRoute = async ({ request, params, cookies }) => {
   try {
@@ -32,23 +63,9 @@ export const PATCH: APIRoute = async ({ request, params, cookies }) => {
     }
 
     const data = await request.json();
-    const updateData: Record<string, unknown> = { updatedAt: new Date() };
-
-    if (data.title !== undefined) updateData.title = data.title;
-    if (data.description !== undefined) updateData.description = data.description;
-    if (data.content !== undefined) {
-      updateData.content = data.content;
-      updateData.readTime = calcReadTime(data.content);
-    }
-    if (data.coverImage !== undefined) updateData.coverImage = data.coverImage;
-    if (data.tags !== undefined) updateData.tags = data.tags;
-    if (data.lang !== undefined) updateData.lang = data.lang;
-    if (data.isPublished !== undefined) updateData.isPublished = data.isPublished;
-    if (data.publishedAt !== undefined) updateData.publishedAt = new Date(data.publishedAt);
-
     const [updated] = await db
       .update(posts)
-      .set(updateData)
+      .set({ ...data, updatedAt: new Date() })
       .where(eq(posts.id, id))
       .returning();
 
@@ -64,7 +81,7 @@ export const PATCH: APIRoute = async ({ request, params, cookies }) => {
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('[Posts PATCH] Error:', error);
+    console.error('[Post PATCH] Error:', error);
     return new Response(
       JSON.stringify({ error: 'Error interno del servidor' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
@@ -115,7 +132,7 @@ export const DELETE: APIRoute = async ({ params, cookies }) => {
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('[Posts DELETE] Error:', error);
+    console.error('[Post DELETE] Error:', error);
     return new Response(
       JSON.stringify({ error: 'Error interno del servidor' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }

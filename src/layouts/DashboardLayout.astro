@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '../lib/i18n';
 import { ToastProvider } from '../components/ui/toast-provider';
-import DashboardHeader from '../components/dashboard/DashboardHeader';
+import DashboardSiteHeader from '../components/DashboardSiteHeader';
 import '../styles/globals.css';
 
 export interface Props {
@@ -40,7 +40,7 @@ const { locale = 'es', title = 'Dashboard' } = Astro.props;
   </head>
   <body class="noise-bg min-h-screen antialiased selection:bg-primary selection:text-primary-foreground">
     <ToastProvider client:load>
-      <DashboardHeader client:load locale={locale} />
+      <DashboardSiteHeader client:load locale={locale} />
       <main class="pt-20 pb-24">
         <slot />
       </main>
