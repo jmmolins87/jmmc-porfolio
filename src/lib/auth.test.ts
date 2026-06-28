@@ -2,77 +2,77 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 const TEST_SECRET = 'test-secret-123456789012345678901234567890';
 
+vi.mock('@/db/index', () => ({
+  db: {
+    query: {
+      users: {
+        findFirst: vi.fn(),
+      },
+    },
+  },
+}));
+
+vi.mock('bcryptjs', () => ({
+  default: {
+    hash: vi.fn(async (pw: string) => `hashed-${pw}`),
+    compare: vi.fn(async (pw: string, hash: string) => hash === `hashed-${pw}`),
+  },
+}));
+
 beforeEach(() => {
   vi.stubEnv('JWT_SECRET', TEST_SECRET);
-  vi.stubEnv('BLOG_USER', 'testuser');
-  vi.stubEnv('BLOG_PASSWORD', 'testpass');
 });
 
 afterEach(() => {
   vi.unstubAllEnvs();
+  vi.clearAllMocks();
 });
 
 describe('validateCredentials', () => {
-  it('returns true for valid credentials', async () => {
+  it('returns user for valid credentials', async () => {
+    const { db } = await import('@/db/index');
+    const mockUser = { id: '1', username: 'testuser', role: 'admin', passwordHash: 'hashed-testpass' };
+    (db.query.users.findFirst as ReturnType<typeof vi.fn>).mockResolvedValue(mockUser);
+
     const { validateCredentials } = await import('@/lib/auth');
-    expect(validateCredentials('testuser', 'testpass')).toBe(true);
+    const result = await validateCredentials('testuser', 'testpass');
+    expect(result.valid).toBe(true);
+    expect(result.user).toEqual({ id: '1', username: 'testuser', role: 'admin' });
   });
 
   it('returns false for invalid password', async () => {
+    const { db } = await import('@/db/index');
+    const mockUser = { id: '1', username: 'testuser', role: 'admin', passwordHash: 'hashed-testpass' };
+    (db.query.users.findFirst as ReturnType<typeof vi.fn>).mockResolvedValue(mockUser);
+
     const { validateCredentials } = await import('@/lib/auth');
-    expect(validateCredentials('testuser', 'wrongpass')).toBe(false);
+    const result = await validateCredentials('testuser', 'wrongpass');
+    expect(result.valid).toBe(false);
   });
 
   it('returns false for invalid username', async () => {
+    const { db } = await import('@/db/index');
+    (db.query.users.findFirst as ReturnType<typeof vi.fn>).mockResolvedValue(null);
+
     const { validateCredentials } = await import('@/lib/auth');
-    expect(validateCredentials('wronguser', 'testpass')).toBe(false);
+    const result = await validateCredentials('wronguser', 'testpass');
+    expect(result.valid).toBe(false);
   });
 
   it('returns false for empty credentials', async () => {
+    const { db } = await import('@/db/index');
+    (db.query.users.findFirst as ReturnType<typeof vi.fn>).mockResolvedValue(null);
+
     const { validateCredentials } = await import('@/lib/auth');
-    expect(validateCredentials('', '')).toBe(false);
-    expect(validateCredentials('', 'testpass')).toBe(false);
-    expect(validateCredentials('testuser', '')).toBe(false);
-  });
-
-  it('uses default fallback credentials when env vars are not set', async () => {
-    vi.unstubAllEnvs();
-    const { validateCredentials } = await import('@/lib/auth');
-    expect(validateCredentials('admin', 'admin')).toBe(true);
-  });
-});
-
-describe('getSecret fallback', () => {
-  it('uses the hardcoded fallback secret when no env vars are set', async () => {
-    vi.unstubAllEnvs();
-    const { createToken, verifyToken } = await import('./auth');
-    const token = await createToken('testuser');
-    expect(token).toBeTruthy();
-    expect(token.split('.')).toHaveLength(3);
-    const payload = await verifyToken(token);
-    expect(payload).toEqual({ username: 'testuser' });
-  });
-
-  it('falls back to process.env when import.meta.env is not set', async () => {
-    vi.unstubAllEnvs();
-    process.env.JWT_SECRET = 'process-secret-key-12345678901234567890';
-    process.env.BLOG_USER = 'process_user';
-    process.env.BLOG_PASSWORD = 'process_pass';
-    const { createToken, verifyToken, validateCredentials } = await import('@/lib/auth');
-    const token = await createToken('process_user');
-    const payload = await verifyToken(token);
-    expect(payload).toEqual({ username: 'process_user' });
-    expect(validateCredentials('process_user', 'process_pass')).toBe(true);
-    delete process.env.JWT_SECRET;
-    delete process.env.BLOG_USER;
-    delete process.env.BLOG_PASSWORD;
+    const result = await validateCredentials('', '');
+    expect(result.valid).toBe(false);
   });
 });
 
 describe('createToken', () => {
   it('creates a JWT string with three parts', async () => {
     const { createToken } = await import('@/lib/auth');
-    const token = await createToken('testuser');
+    const token = await createToken('testuser', 'admin');
     expect(token).toBeTruthy();
     expect(token.split('.')).toHaveLength(3);
   });
@@ -80,31 +80,31 @@ describe('createToken', () => {
   it('creates different tokens for different usernames', async () => {
     const { createToken } = await import('@/lib/auth');
     const [token1, token2] = await Promise.all([
-      createToken('user1'),
-      createToken('user2'),
+      createToken('user1', 'user'),
+      createToken('user2', 'user'),
     ]);
     expect(token1).not.toBe(token2);
   });
 
-  it('produces a verifiable token', async () => {
+  it('produces a verifiable token with role', async () => {
     const { createToken, verifyToken } = await import('@/lib/auth');
-    const token = await createToken('testuser');
+    const token = await createToken('testuser', 'editor');
     const payload = await verifyToken(token);
-    expect(payload).toEqual({ username: 'testuser' });
+    expect(payload).toEqual({ username: 'testuser', role: 'editor' });
   });
 });
 
 describe('verifyToken', () => {
   it('returns payload for a valid token', async () => {
     const { createToken, verifyToken } = await import('@/lib/auth');
-    const token = await createToken('testuser');
+    const token = await createToken('testuser', 'admin');
     const result = await verifyToken(token);
-    expect(result).toEqual({ username: 'testuser' });
+    expect(result).toEqual({ username: 'testuser', role: 'admin' });
   });
 
   it('returns null for a tampered token', async () => {
     const { createToken, verifyToken } = await import('@/lib/auth');
-    const token = await createToken('testuser');
+    const token = await createToken('testuser', 'admin');
     const tampered = token.slice(0, -4) + 'xxxx';
     const result = await verifyToken(tampered);
     expect(result).toBeNull();
@@ -123,8 +123,8 @@ describe('verifyToken', () => {
   });
 
   it('returns null when secret does not match', async () => {
-    const { createToken, verifyToken } = await import('@/lib/auth');
-    const token = await createToken('testuser');
+    const { createToken } = await import('@/lib/auth');
+    const token = await createToken('testuser', 'admin');
 
     vi.unstubAllEnvs();
     vi.stubEnv('JWT_SECRET', 'different-secret-for-testing-purposes-only!!');
@@ -132,5 +132,27 @@ describe('verifyToken', () => {
     const { verifyToken: verifyWithDifferentSecret } = await import('@/lib/auth');
     const result = await verifyWithDifferentSecret(token);
     expect(result).toBeNull();
+  });
+});
+
+describe('hashPassword and comparePassword', () => {
+  it('hashPassword returns a hashed string', async () => {
+    const { hashPassword } = await import('@/lib/auth');
+    const hash = await hashPassword('mypassword');
+    expect(hash).toBe('hashed-mypassword');
+  });
+
+  it('comparePassword returns true for matching password', async () => {
+    const { hashPassword, comparePassword } = await import('@/lib/auth');
+    const hash = await hashPassword('mypassword');
+    const result = await comparePassword('mypassword', hash);
+    expect(result).toBe(true);
+  });
+
+  it('comparePassword returns false for wrong password', async () => {
+    const { hashPassword, comparePassword } = await import('@/lib/auth');
+    const hash = await hashPassword('mypassword');
+    const result = await comparePassword('wrongpassword', hash);
+    expect(result).toBe(false);
   });
 });
