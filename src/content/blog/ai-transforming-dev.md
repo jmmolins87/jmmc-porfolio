@@ -57,4 +57,5 @@ tags: ["IA", "Desarrollo", "Automatización", "AI", "Development", "Automation"]
 readTime_es: "5 min"
 readTime_en: "5 min"
 date: 2026-06-24
+coverImage: /api/blog-image?pathname=blog%2Fai-transforming-dev.jpg
 ---

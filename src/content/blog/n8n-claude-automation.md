@@ -63,4 +63,5 @@ tags: ["Automatización", "n8n", "Claude", "IA", "AI"]
 readTime_es: "7 min"
 readTime_en: "7 min"
 date: 2026-06-15
+coverImage: /api/blog-image?pathname=blog%2Fn8n-claude-automation.jpg
 ---

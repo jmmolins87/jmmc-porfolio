@@ -47,4 +47,5 @@ tags: ["Arquitectura", "Frontend", "Angular", "React"]
 readTime_es: "6 min"
 readTime_en: "6 min"
 date: 2026-06-20
+coverImage: /api/blog-image?pathname=blog%2Ffrontend-architecture.jpg
 ---

@@ -47,4 +47,5 @@ tags: ["Carrera", "Fullstack", "Diseño", "Experiencia", "Career", "Design"]
 readTime_es: "8 min"
 readTime_en: "8 min"
 date: 2026-06-10
+coverImage: /api/blog-image?pathname=blog%2Fdesigner-to-fullstack.jpg
 ---

@@ -102,6 +102,7 @@ async function seed() {
     const readTimeEs = fm.readTime_es ? String(fm.readTime_es) : calcReadTime(contentEs);
     const readTimeEn = fm.readTime_en ? String(fm.readTime_en) : calcReadTime(contentEn);
     const date = fm.date ? new Date(String(fm.date)) : new Date();
+    const coverImage = fm.coverImage ? String(fm.coverImage) : null;
 
     await db.insert(posts).values({
       slug,
@@ -116,6 +117,7 @@ async function seed() {
         : tags,
       readTimeEs,
       readTimeEn,
+      coverImage,
       isPublished: true,
       publishedAt: date,
       updatedAt: new Date(),

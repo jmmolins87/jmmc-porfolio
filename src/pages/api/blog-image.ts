@@ -1,18 +1,26 @@
 import type { APIRoute } from 'astro';
 
+const BLOB_STORE_URL = 'https://zj1kuezzp5o6qx74.private.blob.vercel-storage.com';
+
 export const GET: APIRoute = async ({ url }) => {
+  const pathname = url.searchParams.get('pathname');
   const blobUrl = url.searchParams.get('url');
-  if (!blobUrl) {
-    return new Response('Missing url param', { status: 400 });
+
+  const targetUrl = pathname
+    ? `${BLOB_STORE_URL}/${pathname}`
+    : blobUrl;
+
+  if (!targetUrl) {
+    return new Response('Missing pathname or url param', { status: 400 });
   }
 
-  const token = process.env.BLOB_READ_WRITE_TOKEN;
+  const token = (typeof import.meta !== 'undefined' && import.meta.env?.BLOB_READ_WRITE_TOKEN) ?? process.env.BLOB_READ_WRITE_TOKEN;
   if (!token) {
     return new Response('Missing BLOB_READ_WRITE_TOKEN', { status: 500 });
   }
 
   try {
-    const res = await fetch(blobUrl, {
+    const res = await fetch(targetUrl, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

@@ -51,4 +51,5 @@ tags: ["Astro", "Portfolio", "SSR", "Web"]
 readTime_es: "6 min"
 readTime_en: "6 min"
 date: 2026-06-05
+coverImage: /api/blog-image?pathname=blog%2Fportfolio-astro-7.jpg
 ---
