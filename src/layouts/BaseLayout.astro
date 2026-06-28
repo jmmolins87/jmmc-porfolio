@@ -106,7 +106,7 @@ const canonical = `${siteUrl}/${locale}/`;
       {locale === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
     </a>
 
-    <Loader client:only="react" />
+    <Loader client:load />
     <SiteHeader client:load locale={locale} />
     <ToastProvider client:load>
       <GradientMorph client:only="react" />

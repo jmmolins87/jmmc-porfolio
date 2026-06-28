@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Loader() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (sessionStorage.getItem('loader-seen')) return;
+    if (sessionStorage.getItem('loader-seen')) {
+      setVisible(false);
+      return;
+    }
 
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
-    setVisible(true);
 
     const timer = setTimeout(() => {
       document.body.style.overflow = '';
