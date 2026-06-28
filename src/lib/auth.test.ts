@@ -12,12 +12,18 @@ vi.mock('@/db/index', () => ({
   },
 }));
 
-vi.mock('bcryptjs', () => ({
-  default: {
-    hash: vi.fn(async (pw: string) => `hashed-${pw}`),
-    compare: vi.fn(async (pw: string, hash: string) => hash === `hashed-${pw}`),
-  },
-}));
+vi.mock('bcrypt', () => {
+  const mockHash = vi.fn(async (pw: string) => `hashed-${pw}`);
+  const mockCompare = vi.fn(async (pw: string, hash: string) => hash === `hashed-${pw}`);
+  return {
+    default: {
+      hash: mockHash,
+      compare: mockCompare,
+    },
+    hash: mockHash,
+    compare: mockCompare,
+  };
+});
 
 beforeEach(() => {
   vi.stubEnv('JWT_SECRET', TEST_SECRET);
