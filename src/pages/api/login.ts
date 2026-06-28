@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       );
     }
 
-    const token = await createToken(result.user.username, result.user.role);
+    const token = await createToken(result.user.username, result.user.role, result.user.id);
 
     cookies.set('auth-token', token, {
       path: '/',

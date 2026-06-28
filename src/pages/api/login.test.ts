@@ -78,7 +78,7 @@ describe('POST /api/login', () => {
 
     await POST({ request, cookies } as any);
     expect(mockValidateCredentials).toHaveBeenCalledWith('myuser', 'mypass');
-    expect(mockCreateToken).toHaveBeenCalledWith('testuser', 'editor');
+    expect(mockCreateToken).toHaveBeenCalledWith('testuser', 'editor', '1');
   });
 
   it('returns 401 when credentials are invalid', async () => {

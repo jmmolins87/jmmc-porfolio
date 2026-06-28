@@ -20,17 +20,17 @@ export async function comparePassword(password: string, hash: string): Promise<b
   return bcrypt.compare(password, hash);
 }
 
-export async function createToken(username: string, role: string): Promise<string> {
-  return new SignJWT({ username, role })
+export async function createToken(username: string, role: string, id: string): Promise<string> {
+  return new SignJWT({ username, role, id })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime(TOKEN_EXPIRY)
     .sign(getSecret());
 }
 
-export async function verifyToken(token: string): Promise<{ username: string; role: string } | null> {
+export async function verifyToken(token: string): Promise<{ id: string; username: string; role: string } | null> {
   try {
     const { payload } = await jwtVerify(token, getSecret());
-    return { username: payload.username as string, role: payload.role as string };
+    return { id: payload.id as string, username: payload.username as string, role: payload.role as string };
   } catch {
     return null;
   }

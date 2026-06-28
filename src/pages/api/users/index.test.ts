@@ -33,14 +33,14 @@ describe('GET /api/users', () => {
   });
 
   it('returns 401 with non-admin token', async () => {
-    mockVerifyToken.mockResolvedValue({ username: 'user', role: 'editor' });
+    mockVerifyToken.mockResolvedValue({ id: '2', username: 'user', role: 'editor' });
     const request = createRequestWithCookie('auth-token=test-token');
     const response = await GET({ request } as any);
     expect(response.status).toBe(401);
   });
 
   it('returns user list for admin', async () => {
-    mockVerifyToken.mockResolvedValue({ username: 'admin', role: 'admin' });
+    mockVerifyToken.mockResolvedValue({ id: '1', username: 'admin', role: 'admin' });
     mockDb.query.users.findMany.mockResolvedValue([{ id: '1', username: 'admin', email: 'admin@test.com', role: 'admin' }]);
     const request = createRequestWithCookie('auth-token=test-token');
     const response = await GET({ request } as any);

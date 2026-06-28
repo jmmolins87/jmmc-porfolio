@@ -10,7 +10,7 @@ async function getAdminUser(request: Request): Promise<{ id: string; username: s
   if (!tokenMatch) return null;
   const payload = await verifyToken(tokenMatch[1]);
   if (!payload || payload.role !== 'admin') return null;
-  return payload as any;
+  return { id: payload.id, username: payload.username, role: payload.role };
 }
 
 export const GET: APIRoute = async ({ request }) => {
