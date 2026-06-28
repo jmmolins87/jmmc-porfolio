@@ -94,6 +94,20 @@ Consult these guides before working on related tasks:
 - **Env vars**: `BREVO_API_KEY` añadida a `.env.example` y `.env` local
 - **Tests**: 8 tests para contact API cubriendo Brevo success, errores, API key faltante, y parse errors
 
+### Fase 11: Multi-User Auth System
+- **bcryptjs**: Instalado para hashing de contraseñas con 10 rounds
+- **Users table**: Tabla `users` añadida a `src/db/schema.ts` (id, username, passwordHash, role, createdAt, updatedAt)
+- **Auth lib**: `src/lib/auth.ts` actualizado con `hashPassword`, `comparePassword`, `validateCredentials` (DB queries), `createToken` ahora acepta `id` param
+- **Login API**: `src/pages/api/login.ts` actualizado para usar bcrypt + DB queries en vez de credenciales hardcoded
+- **Forgot Password**: `src/pages/api/forgot-password.ts` creado — genera token temporal, respponde siempre 200 para no revelar si el usuario existe
+- **Users API**: `src/pages/api/users/index.ts` (GET lista, POST crea admin-only) + `src/pages/api/users/[id].ts` (GET, PUT, DELETE — admin-only)
+- **Middleware**: `src/middleware.ts` actualizado con role-based protection, rutas `/dashboard/users/*` protegidas para admin
+- **LoginForm**: Actualizado con forgot password flow (email → success message → back to login)
+- **Seed script**: `src/scripts/seed-admin.ts` actualizado para usar bcrypt hash en vez de plaintext
+- **Dashboard pages**: `src/pages/dashboard/users/` con listado y formulario de creación/edición
+- **Components**: `UserList.tsx` y `UserForm.tsx` para gestión de usuarios
+- **Test fix**: `vitest.config.ts` — `testTimeout` incrementado a 15s para soportar carga de bcryptjs native bindings en suite completa (160 tests pasan)
+
 ### Fase 8: Animaciones y UI
 - **Animaciones títulos**: Todos los títulos migrados de `useTransform` a `whileInView` + `fadeUp` en About, Skills, Timeline, Projects, Blog, Services, Contact — evita desaparición al centrar sección con Lenis
 - **Formulario Contact**: Migrado a `whileInView` para evitar desincronización con Lenis
