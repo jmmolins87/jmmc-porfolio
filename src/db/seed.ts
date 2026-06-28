@@ -1,7 +1,9 @@
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
+import { eq } from 'drizzle-orm';
 import * as schema from '@/db/schema';
-import { posts } from '@/db/schema';
+import { posts, users } from '@/db/schema';
+import { hashPassword } from '@/lib/auth';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
@@ -60,6 +62,20 @@ function calcReadTime(content: string): string {
 }
 
 async function seed() {
+  const existingAdmin = await db.query.users.findFirst({ where: eq(users.username, 'juanma') });
+  if (!existingAdmin) {
+    const passwordHash = await hashPassword('07870787!Jm');
+    await db.insert(users).values({
+      username: 'juanma',
+      email: 'jmmolins87@gmail.com',
+      passwordHash,
+      role: 'admin',
+    });
+    console.log('✓ Admin user created (juanma)');
+  } else {
+    console.log('- Admin user already exists, skipping');
+  }
+
   const blogDir = join(process.cwd(), 'src/content/blog');
   const files = readdirSync(blogDir).filter((f) => f.endsWith('.md'));
 
