@@ -2,10 +2,16 @@ import { defineMiddleware } from 'astro/middleware';
 import { verifyToken } from '@/lib/auth';
 
 const protectedPagePaths = ['/dashboard', '/blog', '/es/blog', '/en/blog'];
+const adminPagePaths = ['/dashboard/users'];
 const protectedApiPaths = ['/api/posts', '/api/upload'];
+const adminApiPaths = ['/api/users'];
 
 function isProtectedPage(pathname: string): boolean {
   return protectedPagePaths.some((p) => pathname === p || pathname.startsWith(p + '/'));
+}
+
+function isAdminPage(pathname: string): boolean {
+  return adminPagePaths.some((p) => pathname === p || pathname.startsWith(p + '/'));
 }
 
 function isProtectedApiWrite(pathname: string, method: string): boolean {
@@ -13,11 +19,18 @@ function isProtectedApiWrite(pathname: string, method: string): boolean {
   return protectedApiPaths.some((p) => pathname === p || pathname.startsWith(p + '/'));
 }
 
+function isAdminApi(pathname: string, method: string): boolean {
+  return adminApiPaths.some((p) => pathname === p || pathname.startsWith(p + '/'));
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
   const method = context.request.method;
 
-  if (isProtectedPage(pathname) || isProtectedApiWrite(pathname, method)) {
+  const needsAuth = isProtectedPage(pathname) || isProtectedApiWrite(pathname, method);
+  const needsAdmin = isAdminPage(pathname) || isAdminApi(pathname, method);
+
+  if (needsAuth || needsAdmin) {
     const token = context.cookies.get('auth-token')?.value;
     if (!token) {
       if (pathname.startsWith('/api/')) {
@@ -38,6 +51,16 @@ export const onRequest = defineMiddleware(async (context, next) => {
         );
       }
       return context.redirect('/login');
+    }
+
+    if (needsAdmin && payload.role !== 'admin') {
+      if (pathname.startsWith('/api/')) {
+        return new Response(
+          JSON.stringify({ error: 'No autorizado' }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+      return context.redirect('/dashboard');
     }
   }
 
