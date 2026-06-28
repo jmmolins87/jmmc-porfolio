@@ -46,7 +46,7 @@ export default function Blog({ locale, posts = [] }: Props) {
           }
         }
       },
-      { root: container, threshold: 0.6 }
+      { root: container, threshold: 0.7 }
     );
 
     for (const card of cardsRef.current) {
@@ -70,12 +70,18 @@ export default function Blog({ locale, posts = [] }: Props) {
   const scrollToCard = useCallback((index: number) => {
     const container = containerRef.current;
     const card = cardsRef.current[index];
-    if (container && card) {
-      container.scrollTo({
-        left: card.offsetLeft - container.offsetLeft,
-        behavior: 'smooth',
-      });
-    }
+    if (!container || !card) return;
+
+    setActiveIndex(index);
+
+    const targetLeft = card.offsetLeft + (card.offsetWidth / 2) - (container.clientWidth / 2);
+    const maxLeft = container.scrollWidth - container.clientWidth;
+    const clampedLeft = Math.max(0, Math.min(targetLeft, maxLeft));
+
+    container.scrollTo({
+      left: clampedLeft,
+      behavior: 'smooth',
+    });
   }, []);
 
   function goNext() {
@@ -128,7 +134,7 @@ export default function Blog({ locale, posts = [] }: Props) {
 
           <div
             ref={containerRef}
-            className="flex-1 max-w-[1200px] mx-auto flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-[25%] py-2 [&::-webkit-scrollbar]:hidden"
+            className="flex-1 max-w-[1200px] mx-auto flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth px-0 py-2 [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {posts.map((post, i) => (
@@ -136,7 +142,7 @@ export default function Blog({ locale, posts = [] }: Props) {
                 key={post.id}
                 ref={(el) => { cardsRef.current[i] = el; }}
                 data-index={i}
-                className="snap-start shrink-0 w-full"
+                className="snap-center shrink-0 w-[87.5%]"
               >
                 <article
                   onClick={() => openPost(post)}
@@ -144,7 +150,7 @@ export default function Blog({ locale, posts = [] }: Props) {
                 >
                   {post.coverImage && (
                     <img
-                      src={`/api/blog-image?url=${encodeURIComponent(post.coverImage)}`}
+                      src={post.coverImage}
                       alt={post.title}
                       className="w-full h-48 object-cover rounded-xl mb-4"
                       loading="lazy"
@@ -226,7 +232,7 @@ export default function Blog({ locale, posts = [] }: Props) {
               <DialogHeader>
                 {selected.coverImage && (
                   <img
-                    src={`/api/blog-image?url=${encodeURIComponent(selected.coverImage)}`}
+                    src={selected.coverImage}
                     alt={selected.title}
                     className="w-full h-56 object-cover rounded-xl mb-4"
                   />
