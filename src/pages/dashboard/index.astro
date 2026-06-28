@@ -1,5 +1,13 @@
 ---
 import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { verifyToken } from '@/lib/auth';
+
+const token = Astro.cookies.get('auth-token')?.value;
+let isAdmin = false;
+if (token) {
+  const payload = await verifyToken(token);
+  isAdmin = payload?.role === 'admin';
+}
 ---
 
 <DashboardLayout title="Dashboard">
@@ -14,6 +22,15 @@ import DashboardLayout from '@/layouts/DashboardLayout.astro';
           <h2 class="text-lg font-semibold mb-2">Blog</h2>
           <p class="text-sm text-muted-foreground">Crear y gestionar artículos del blog</p>
         </a>
+        {isAdmin && (
+          <a
+            href="/dashboard/users"
+            class="block p-6 rounded-2xl border border-border bg-card hover:border-primary/30 hover:glow-sm transition-all"
+          >
+            <h2 class="text-lg font-semibold mb-2">Usuarios</h2>
+            <p class="text-sm text-muted-foreground">Gestionar usuarios del sistema</p>
+          </a>
+        )}
       </div>
     </div>
   </main>

@@ -1,0 +1,19 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import UserList from '@/components/UserList';
+---
+
+<DashboardLayout title="Usuarios">
+  <div class="section-container">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="section-title">Usuarios</h1>
+      <a
+        href="/dashboard/users/new"
+        class="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+      >
+        Añadir usuario
+      </a>
+    </div>
+    <UserList client:load />
+  </div>
+</DashboardLayout>

@@ -1,0 +1,11 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import UserForm from '@/components/UserForm';
+---
+
+<DashboardLayout title="Nuevo usuario">
+  <div class="section-container">
+    <h1 class="section-title mb-8">Nuevo usuario</h1>
+    <UserForm client:load />
+  </div>
+</DashboardLayout>
